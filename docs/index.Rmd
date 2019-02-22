@@ -213,7 +213,7 @@ diamonds <- ggplot2::diamonds
 
 - É um pacote usado para visualização de dados.
 
-- É uma implementação do Grammar of Graphics de Leland Wilkinson -  um sistema coerente para descrever e construir gráficos. Ou seja, ele foi desenvolvido pautado em vários conceitos estatísticos importantes.
+- É uma implementação dos conceitos e definições sobre o que é um gráfico oriundos do livro _Grammar of Graphics_ de Leland Wilkinson. 
 
 - [Cheatsheet em português](https://www.rstudio.com/wp-content/uploads/2016/03/ggplot2-cheatsheet-portuguese.pdf)
 
@@ -229,7 +229,8 @@ knitr::include_graphics("img/ggplot2.png")
 ---
 # O que é o grammar of graphics?
   
-  - A ideia básica é que de forma independente podemos especificar  e combinar blocos de construção de um gráfico para criar praticamente qualquer tipo de exibição gráfica desejada.
+  - A ideia básica é que de forma independente podemos 
+especificar  e combinar blocos de construção de um gráfico para criar praticamente qualquer tipo de exibição gráfica desejada. 
 
 - Os blocos de construção (ou camadas)  de um gráfico incluem:
 
@@ -244,10 +245,9 @@ knitr::include_graphics("img/ggplot2.png")
   
 ---
 ** Exemplo passo a passo - geom_histogram() **
+  A função ggplot() recebe um data frame e cria a camada base do gráfico. Se rodarmos somente ela, teremos um painel em branco:
 
-A função ggplot() recebe um data frame e cria o bloco base do gráfico. Se rodarmos somente ela, teremos um painel em branco:
 ```{r warning=FALSE}
-
 DT::datatable(head(diamonds), fillContainer = FALSE)
 diamonds <- ggplot2::diamonds
 #ggplot(data = diamonds)
@@ -255,76 +255,292 @@ diamonds %>% ggplot() #usando o pipe
 ```
 ---
 ** Exemplo passo a passo - geom_histogram() **
+  Porém, para construirmos o gráfico precisamos dizer como as observações das nossas variáveis serão representadas no gráfico e e para isso usamos a camada de mapeamento estético.
+  A combinação ggplot() + geom_() é o que definirá o tipo de gráfico que queremos gerar
 
-Porém para construirmos o gráfico precisamos dizer como as observações serão mapeadas nos aspectos visuais do gráfico e quais formas geométricas serão utilizadas para isso. #reescrever esse trecho
 ```{r warning=FALSE}
 diamonds %>% ggplot() +
   geom_histogram(mapping = aes(x = depth))
-
 ```
-
-
 ---
 ** Desafio 1 **
-Plotar a distribuição de frequências da variável price
+  Plotar a distribuição de frequências (também conhecida como histograma) da variável price
+
+---
+** Desafio 1 - RESPOSTA **
+  Plotar a distribuição de frequências (também conhecida como histograma) da variável price
+
 ```{r warning=FALSE}
+#lembre-se que as camadas sÃ£o unidas por um + e nÃ£o por  %>% 
 diamonds %>% ggplot() +
   geom_histogram(mapping = aes(x = price))
 
 ```
-
 ---
 ** Exemplo passo a passo 2: geom_bar **
+  Para variáveis categóricas, ou seja, aquelas que representam uma categoria como qualidade (bom, ruim), sexo(M, F) ou no nosso caso, a qualidade do corte da pedra, podemos usar um gráfico de barras
 
-Para variáveis categóricas, ou seja, aquelas que representam uma categoria como qualidade (bom, ruim), sexo(M, F) ou no nosso caso, a qualidade do corte da pedra, podemos usar um gráfico de barras
 ```{r warning=FALSE}
 diamonds %>% ggplot() +
   geom_bar(aes(x=cut))
 ```
 ---
 ** Exemplo passo a passo 2: geom_bar **
+  Podemos preencher as colunas com a informação sobre a cor das pedras
+
 ```{r warning=FALSE}
 diamonds %>% ggplot()+
   geom_bar(aes(x=cut, fill=color))
 ```
-
 ---
 ** Exemplo passo a passo 2: geom_bar **
+  Com a camada theme_bw() podemos mudar o fundo do nosso gráfico
+
 ```{r warning=FALSE}
 diamonds %>% ggplot() + 
   geom_bar(aes(x=cut, fill=color)) + theme_bw()
 ```
-
 ---
 ** Exemplo passo a passo 2: geom_bar **
+  Usando a função labs() podemos inserir títulos e legendas apropriadas para nosso gráfico
+
 ```{r warning=FALSE}
 diamonds %>%  ggplot(aes(x=cut, fill=color)) +
   geom_bar() + theme_bw() +
   labs(title = "Título do gráfico", x = "Corte do diamante", 
-    y = "Contagem", fill = "Cor") +  
-  facet_wrap(~clarity)
+    y = "Contagem", fill = "Cor")
+```
+---
+** Desafio 2 **
+  Plote um gráfico de barras da váriavel claridade da pedra incluindo a informação sobre a cor da pedra para cada tipo de claridade de pedra. Use também legendas apropriadas 
+
+---
+** Desafio 2 - RESPOSTA **
+  Plote um gráfico de barras da váriavel claridade da pedra incluindo a informação sobre a cor da pedra para cada tipo de claridade de pedra. Use também legendas apropriadas 
+
+```{r warning=FALSE}
+diamonds %>%  ggplot(aes(x=clarity, fill=color)) +
+  geom_bar() + theme_bw() +
+  labs(title = "Cores dos diamantes por tipo de claridade", x = "Claridade do diamante", 
+    y = "Contagem", fill = "Cor")
+```
+---
+** Exemplo passo a passo 3: geom_point **
+
+```{r}
+diamonds %>% ggplot() + geom_point(aes(x = carat, y = price))
+```
+---
+** Exemplo passo a passo 3: geom_point **
+  Podemos estabelecer um tamanho médio por pedra e classificá-las como pequenas ou grandes
+  
+```{r}
+diamonds %>%
+   mutate(
+    tamanho = (x + y + z)/3,
+    tamanho = ifelse(tamanho <= 6, "Pequena", "Grande")
+  ) %>% 
+  filter(!is.na(tamanho)) %>% 
+  ggplot() + 
+  geom_point(mapping = aes(x = carat, y = price, color = tamanho))
+```
+---
+** Exemplo passo a passo 3: geom_point **
+
+Dois pontos importantes nesse exemplo:
+
+- Aqui fomos capazes de juntar os conceitos aprendidos até aqui do dplyr usando as funções mutate() e filter() juntamente com os as funções do ggplot2. Isso é extremamente comum quando estamos lidando com a visualização de dados.
+
+- O atributo color foi utilizado dentro da função aes(), pois temos a variável tamanho que precisa ser mapeada para ser representada no gráfico.
+
+---
+** Exemplo passo a passo 3: geom_point ** 
+  Outro exemplo
+
+```{r}
+diamonds %>%
+   mutate(
+    compra = ifelse(cut == "Fair" & price >= 5000, "Não vale a pena comprar", "Top")) %>% 
+  ggplot() + 
+  geom_point(mapping = aes(x = carat, y = price, color = compra))
+```
+---
+** Desafio 3 **
+
+Plote um gráfico de dispersão das variáveis price e carat pintando os pontos de acordo com a qualidade do corte das pedras
+
+---
+** Desafio 3 **
+  Plote um gráfico de dispersão das variáveis price e carat pintando os pontos de acordo com a qualidade do corte das pedras
+  
+```{r}
+diamonds %>% ggplot() + 
+  geom_point(mapping = aes(x = carat, y = price, color = cut))
+```
+---
+# Atributos estéticos
+
+* A função aes() indica a relação entre os dados e cada aspecto visual do gráfico, ou seja, qual variável será representada no eixo x, no eixo y, o tipo de linha do gráfico, a cor e o tamanho dos componentes geométricos, etc.
+ 
+  * Os aspectos visuais mais utilizados incluem:
+ 
+**color=**: altera a cor de formas que não têm área (pontos e retas).
+
+**fill=**: altera a cor de formas com área (barras, caixas, densidades, áreas).
+
+**size=**: altera o tamanho de formas.
+
+**type=**: altera o tipo da forma, geralmente usada para pontos.
+
+**linetype=**: altera o tipo da linha.
+---
+# Formas geométricas
+  * Os _geoms_ basicamente definem o tipo de gráfico que queremos construir.
+  Os principais são:
+
+*geom_line* - para linhas definidas por pares (x,y).
+
+*geom_abline* - para retas definidas por um intercepto e uma inclinação.
+
+*geom_hline* - para retas horizontais.
+
+*geom_bar* - para barras.
+
+*geom_histogram* - para histogramas.
+
+*geom_boxplot* - para boxplots.
+
+*geom_density* - para densidades.
+
+*geom_area* - para áreas.
+---
+# Quais aspectos visuais utilizar para cada geom_ ?
+  * Depende do que se quer mostrar no gráfico e do que cada geom_ aceita como aspecto visual
+  * Porém, temos um gif muito bom para isso:
+  
+```{r, include=FALSE}
+library(igraph)
+library(edgebundleR)
+library(dplyr)
+library(purrr)
+suppressPackageStartupMessages(library(widgetframe))
+
+parameters <- readLines("C:/Users/WADSONGARBESGONCALVE/Downloads/geom_aes.csv")
+split_up <- function(x){
+  params <- unlist(strsplit(x, ","))
+  return(data.frame("from" = params[1], "to" = params[2:length(params)]))
+}
+
+relationship <- map_df(parameters, split_up)
+head(relationship)
+```
+
+```{r, warning= FALSE}
+frameWidget(edgebundle(graph_from_data_frame(relationship), tension = 0.45, cutoff = 0.1, width = NULL, fontsize = 14,
+  padding = 110, nodesize = c(5, 20), directed = FALSE), height = "600")
+```
+[Fonte](https://www.yihanwu.ca/post/geoms-and-aesthetic-parameters/)
+---
+# Associando gráficos
+  Imagine que temos dois gráficos que mapeiam as mesmas variáveis:
+
+```{r}
+# esquerda
+diamonds %>% 
+  ggplot() + 
+  geom_point(aes(x = carat, y = price))
+```
+```{r}
+# direita
+diamonds %>% 
+  ggplot() + 
+  geom_smooth(aes(x = carat, y = price))
+```
+
+---
+# Associando gráficos
+  Podemos simplesmente escrever:
+```{r, warning=FALSE}
+# juntos
+diamonds %>% 
+  ggplot() + 
+  geom_point(aes(x = carat, y = price)) +
+  geom_smooth(aes(x = carat, y = price))
+
+```
+
+---
+# Associando gráficos
+  Podemos ainda especificar a função aes() dentro da função ggplot2 para não repetirmos ela duas vezes (e assim evitar possíveis erros, pois diferentes váriáveis podem ser mapeadas no gráfico)
+
+```{r, warning=FALSE}
+diamonds %>% 
+  ggplot(aes(x = carat, y = price)) + 
+  geom_point(aes(color = color)) +
+  geom_smooth()
+```
+---
+# Associando gráficos
+  Podemos também reproduzir um mesmo gráfico para várias categorias de uma dada variável:
+
+```{r, warning=FALSE}
+diamonds %>% 
+  ggplot(aes(x = carat, y = price)) + 
+  geom_point(aes(color = color)) +
+  geom_smooth() +
+  facet_wrap(~cut) #testar parametros ncol e nrow
+```
+
+---
+** Desafio 4 **
+
+  Plote um gráfico de dispersão das variáveis price e carat pintando os pontos de acordo com a qualidade do corte das pedras juntamente com a linha de tendência desses pontos (e seu intervalo de confiança) para cada uma das categorias da variável color
+---
+** Desafio 4 - RESPOSTA **
+  Plote um gráfico de dispersão das variáveis price e carat pintando os pontos de acordo com a qualidade do corte das pedras juntamente com a linha de tendência desses pontos (e seu intervalo de confiança) para cada uma das categorias da variável color
+
+```{r}
+diamonds %>% 
+  ggplot(mapping = aes(x = carat, y = price)) + 
+  geom_point(aes(color = cut)) +
+  geom_smooth() +
+  facet_wrap(~color)
 ```
 ---
 class:  inverse, center, middle
-# RMarkdown e relatórios dinâmicos
+## Temos mais um tempinho?
 ---
-## Rmarkdown
-* É um tipo de arquivo que suporta códigos em R, texto, markdown e outros formatos.
+# Associando diferentes gráficos
+  Dessa vez precisamos de um pacote extra chamado patchwork
+```{r}
+#instale o pacote com esse comando:
+devtools::install_github("thomasp85/patchwork")
+#carregue o pacote
+library(patchwork)
+```
+---
+** Desafio 5 - E ÚLTIMO! **
 
-* Apresenta os seus códigos, o resultado, e também os seus comentários.
+Plote quaisquer dois gráficos usando o ggplot2 e salve cada um deles em um objeto chamado grafico1 e grafico2, respectivamente (pode ser os gráficos mais simples que vimos no começo, como o histograma e o gráfico de dispersão)
 
-* Arquivos **.Rmd** são reprodutíveis.
+---
+** Desafio 5 - RESPOSTA **
+```{r}
+grafico1 <- diamonds %>%  
+  ggplot(aes(x=clarity, fill=color)) +
+  geom_bar() + theme_bw() +
+  labs(title = "Cores dos diamantes por tipo de claridade", x = "Claridade do diamante", 
+    y = "Contagem", fill = "Cor")
 
-* São interessantes para trabalhar em equipe, para comunicar seus resultados, e para desenvolver seus códigos em R.
+grafico2 <- diamonds %>% 
+  filter(color %in% c("E", "F", "G", "H", "I", "J")) %>%
+  ggplot() + 
+  geom_boxplot(aes(x = color, y = price, fill = color), show.legend = FALSE) +
+  labs(title = "Boxplot das cores dos diamantes", x = "Cor do diamante", 
+    y = "Preço do diamante")
 
-* O markdown é uma linguagem de marcação simples. 
-
-* [Rmarkdown Cheatsheet](http://www.rstudio.com/wp-content/uploads/2016/03/rmarkdown-cheatsheet-2.0.pdf)
-
-- Pacote [Rmarkdown](https://rmarkdown.rstudio.com/) 
-- Pacote [knitr](http://yihui.name/knitr/)
-- [Rmarkdown Cheatsheet](http://www.rstudio.com/wp-content/uploads/2016/03/rmarkdown-cheatsheet-2.0.pdf)
-
+grafico1 + grafico2
+```
 ---
 ## Rmarkdown
 * Possibilita exportar diferentes tipos de arquivos.
