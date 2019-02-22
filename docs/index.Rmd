@@ -420,12 +420,14 @@ diamonds %>% ggplot() +
   
 ```{r, include=FALSE}
 library(igraph)
+#install.packages("edgebundleR")
 library(edgebundleR)
 library(dplyr)
 library(purrr)
+#install.packages("widgetframe")
 suppressPackageStartupMessages(library(widgetframe))
 
-parameters <- readLines("C:/Users/WADSONGARBESGONCALVE/Downloads/geom_aes.csv")
+parameters <- readLines("data/geom_aes.csv")
 split_up <- function(x){
   params <- unlist(strsplit(x, ","))
   return(data.frame("from" = params[1], "to" = params[2:length(params)]))

@@ -15,6 +15,8 @@
     <script src="libs/dt-core-1.10.16/js/jquery.dataTables.min.js"></script>
     <link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
     <script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
+    <script src="libs/pymjs-1.3.2/pym.v1.js"></script>
+    <script src="libs/widgetframe-binding-0.3.1/widgetframe.js"></script>
   </head>
   <body>
     <textarea id="source">
@@ -192,8 +194,8 @@ library(ggplot2)
 DT::datatable(head(diamonds), fillContainer = FALSE)
 ```
 
-<div id="htmlwidget-b58cfeeb65395fd8d518" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-b58cfeeb65395fd8d518">{"x":{"filter":"none","fillContainer":false,"data":[["1","2","3","4","5","6"],[0.23,0.21,0.23,0.29,0.31,0.24],["Ideal","Premium","Good","Premium","Good","Very Good"],["E","E","E","I","J","J"],["SI2","SI1","VS1","VS2","SI2","VVS2"],[61.5,59.8,56.9,62.4,63.3,62.8],[55,61,65,58,58,57],[326,326,327,334,335,336],[3.95,3.89,4.05,4.2,4.34,3.94],[3.98,3.84,4.07,4.23,4.35,3.96],[2.43,2.31,2.31,2.63,2.75,2.48]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>carat<\/th>\n      <th>cut<\/th>\n      <th>color<\/th>\n      <th>clarity<\/th>\n      <th>depth<\/th>\n      <th>table<\/th>\n      <th>price<\/th>\n      <th>x<\/th>\n      <th>y<\/th>\n      <th>z<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,5,6,7,8,9,10]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-8d581be67c5c8ad64032" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-8d581be67c5c8ad64032">{"x":{"filter":"none","fillContainer":false,"data":[["1","2","3","4","5","6"],[0.23,0.21,0.23,0.29,0.31,0.24],["Ideal","Premium","Good","Premium","Good","Very Good"],["E","E","E","I","J","J"],["SI2","SI1","VS1","VS2","SI2","VVS2"],[61.5,59.8,56.9,62.4,63.3,62.8],[55,61,65,58,58,57],[326,326,327,334,335,336],[3.95,3.89,4.05,4.2,4.34,3.94],[3.98,3.84,4.07,4.23,4.35,3.96],[2.43,2.31,2.31,2.63,2.75,2.48]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>carat<\/th>\n      <th>cut<\/th>\n      <th>color<\/th>\n      <th>clarity<\/th>\n      <th>depth<\/th>\n      <th>table<\/th>\n      <th>price<\/th>\n      <th>x<\/th>\n      <th>y<\/th>\n      <th>z<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,5,6,7,8,9,10]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 
 ```r
 diamonds &lt;- ggplot2::diamonds
@@ -219,7 +221,7 @@ diamonds &lt;- ggplot2::diamonds
 
 - É um pacote usado para visualização de dados.
 
-- É uma implementação do Grammar of Graphics de Leland Wilkinson -  um sistema coerente para descrever e construir gráficos. Ou seja, ele foi desenvolvido pautado em vários conceitos estatísticos importantes.
+- É uma implementação dos conceitos e definições sobre o que é um gráfico oriundos do livro _Grammar of Graphics_ de Leland Wilkinson. 
 
 - [Cheatsheet em português](https://www.rstudio.com/wp-content/uploads/2016/03/ggplot2-cheatsheet-portuguese.pdf)
 
@@ -233,7 +235,8 @@ diamonds &lt;- ggplot2::diamonds
 ---
 # O que é o grammar of graphics?
   
-  - A ideia básica é que de forma independente podemos especificar  e combinar blocos de construção de um gráfico para criar praticamente qualquer tipo de exibição gráfica desejada.
+  - A ideia básica é que de forma independente podemos 
+especificar  e combinar blocos de construção de um gráfico para criar praticamente qualquer tipo de exibição gráfica desejada. 
 
 - Os blocos de construção (ou camadas)  de um gráfico incluem:
 
@@ -248,15 +251,15 @@ diamonds &lt;- ggplot2::diamonds
   
 ---
 ** Exemplo passo a passo - geom_histogram() **
+  A função ggplot() recebe um data frame e cria a camada base do gráfico. Se rodarmos somente ela, teremos um painel em branco:
 
-A função ggplot() recebe um data frame e cria o bloco base do gráfico. Se rodarmos somente ela, teremos um painel em branco:
 
 ```r
 DT::datatable(head(diamonds), fillContainer = FALSE)
 ```
 
-<div id="htmlwidget-90514a52058444ac6f48" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-90514a52058444ac6f48">{"x":{"filter":"none","fillContainer":false,"data":[["1","2","3","4","5","6"],[0.23,0.21,0.23,0.29,0.31,0.24],["Ideal","Premium","Good","Premium","Good","Very Good"],["E","E","E","I","J","J"],["SI2","SI1","VS1","VS2","SI2","VVS2"],[61.5,59.8,56.9,62.4,63.3,62.8],[55,61,65,58,58,57],[326,326,327,334,335,336],[3.95,3.89,4.05,4.2,4.34,3.94],[3.98,3.84,4.07,4.23,4.35,3.96],[2.43,2.31,2.31,2.63,2.75,2.48]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>carat<\/th>\n      <th>cut<\/th>\n      <th>color<\/th>\n      <th>clarity<\/th>\n      <th>depth<\/th>\n      <th>table<\/th>\n      <th>price<\/th>\n      <th>x<\/th>\n      <th>y<\/th>\n      <th>z<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,5,6,7,8,9,10]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-58353093c7f340edca3e" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-58353093c7f340edca3e">{"x":{"filter":"none","fillContainer":false,"data":[["1","2","3","4","5","6"],[0.23,0.21,0.23,0.29,0.31,0.24],["Ideal","Premium","Good","Premium","Good","Very Good"],["E","E","E","I","J","J"],["SI2","SI1","VS1","VS2","SI2","VVS2"],[61.5,59.8,56.9,62.4,63.3,62.8],[55,61,65,58,58,57],[326,326,327,334,335,336],[3.95,3.89,4.05,4.2,4.34,3.94],[3.98,3.84,4.07,4.23,4.35,3.96],[2.43,2.31,2.31,2.63,2.75,2.48]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>carat<\/th>\n      <th>cut<\/th>\n      <th>color<\/th>\n      <th>clarity<\/th>\n      <th>depth<\/th>\n      <th>table<\/th>\n      <th>price<\/th>\n      <th>x<\/th>\n      <th>y<\/th>\n      <th>z<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,5,6,7,8,9,10]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 
 ```r
 diamonds &lt;- ggplot2::diamonds
@@ -267,8 +270,9 @@ diamonds %&gt;% ggplot() #usando o pipe
 &lt;img src="index_files/figure-html/unnamed-chunk-10-2.png" style="display: block; margin: auto;" /&gt;
 ---
 ** Exemplo passo a passo - geom_histogram() **
+  Porém, para construirmos o gráfico precisamos dizer como as observações das nossas variáveis serão representadas no gráfico e e para isso usamos a camada de mapeamento estético.
+  A combinação ggplot() + geom_() é o que definirá o tipo de gráfico que queremos gerar
 
-Porém para construirmos o gráfico precisamos dizer como as observações serão mapeadas nos aspectos visuais do gráfico e quais formas geométricas serão utilizadas para isso. #reescrever esse trecho
 
 ```r
 diamonds %&gt;% ggplot() +
@@ -280,13 +284,17 @@ diamonds %&gt;% ggplot() +
 ```
 
 &lt;img src="index_files/figure-html/unnamed-chunk-11-1.png" style="display: block; margin: auto;" /&gt;
-
-
 ---
 ** Desafio 1 **
-Plotar a distribuição de frequências da variável price
+  Plotar a distribuição de frequências (também conhecida como histograma) da variável price
+
+---
+** Desafio 1 - RESPOSTA **
+  Plotar a distribuição de frequências (também conhecida como histograma) da variável price
+
 
 ```r
+#lembre-se que as camadas sÃ£o unidas por um + e nÃ£o por  %&gt;% 
 diamonds %&gt;% ggplot() +
   geom_histogram(mapping = aes(x = price))
 ```
@@ -296,11 +304,10 @@ diamonds %&gt;% ggplot() +
 ```
 
 &lt;img src="index_files/figure-html/unnamed-chunk-12-1.png" style="display: block; margin: auto;" /&gt;
-
 ---
 ** Exemplo passo a passo 2: geom_bar **
+  Para variáveis categóricas, ou seja, aquelas que representam uma categoria como qualidade (bom, ruim), sexo(M, F) ou no nosso caso, a qualidade do corte da pedra, podemos usar um gráfico de barras
 
-Para variáveis categóricas, ou seja, aquelas que representam uma categoria como qualidade (bom, ruim), sexo(M, F) ou no nosso caso, a qualidade do corte da pedra, podemos usar um gráfico de barras
 
 ```r
 diamonds %&gt;% ggplot() +
@@ -310,6 +317,8 @@ diamonds %&gt;% ggplot() +
 &lt;img src="index_files/figure-html/unnamed-chunk-13-1.png" style="display: block; margin: auto;" /&gt;
 ---
 ** Exemplo passo a passo 2: geom_bar **
+  Podemos preencher as colunas com a informação sobre a cor das pedras
+
 
 ```r
 diamonds %&gt;% ggplot()+
@@ -317,9 +326,10 @@ diamonds %&gt;% ggplot()+
 ```
 
 &lt;img src="index_files/figure-html/unnamed-chunk-14-1.png" style="display: block; margin: auto;" /&gt;
-
 ---
 ** Exemplo passo a passo 2: geom_bar **
+  Com a camada theme_bw() podemos mudar o fundo do nosso gráfico
+
 
 ```r
 diamonds %&gt;% ggplot() + 
@@ -327,40 +337,340 @@ diamonds %&gt;% ggplot() +
 ```
 
 &lt;img src="index_files/figure-html/unnamed-chunk-15-1.png" style="display: block; margin: auto;" /&gt;
-
 ---
 ** Exemplo passo a passo 2: geom_bar **
+  Usando a função labs() podemos inserir títulos e legendas apropriadas para nosso gráfico
+
 
 ```r
 diamonds %&gt;%  ggplot(aes(x=cut, fill=color)) +
   geom_bar() + theme_bw() +
   labs(title = "Título do gráfico", x = "Corte do diamante", 
-    y = "Contagem", fill = "Cor") +  
-  facet_wrap(~clarity)
+    y = "Contagem", fill = "Cor")
 ```
 
 &lt;img src="index_files/figure-html/unnamed-chunk-16-1.png" style="display: block; margin: auto;" /&gt;
 ---
-class:  inverse, center, middle
-# RMarkdown e relatórios dinâmicos
+** Desafio 2 **
+  Plote um gráfico de barras da váriavel claridade da pedra incluindo a informação sobre a cor da pedra para cada tipo de claridade de pedra. Use também legendas apropriadas 
+
 ---
-## Rmarkdown
-* É um tipo de arquivo que suporta códigos em R, texto, markdown e outros formatos.
+** Desafio 2 - RESPOSTA **
+  Plote um gráfico de barras da váriavel claridade da pedra incluindo a informação sobre a cor da pedra para cada tipo de claridade de pedra. Use também legendas apropriadas 
 
-* Apresenta os seus códigos, o resultado, e também os seus comentários.
 
-* Arquivos **.Rmd** são reprodutíveis.
+```r
+diamonds %&gt;%  ggplot(aes(x=clarity, fill=color)) +
+  geom_bar() + theme_bw() +
+  labs(title = "Cores dos diamantes por tipo de claridade", x = "Claridade do diamante", 
+    y = "Contagem", fill = "Cor")
+```
 
-* São interessantes para trabalhar em equipe, para comunicar seus resultados, e para desenvolver seus códigos em R.
+&lt;img src="index_files/figure-html/unnamed-chunk-17-1.png" style="display: block; margin: auto;" /&gt;
+---
+** Exemplo passo a passo 3: geom_point **
 
-* O markdown é uma linguagem de marcação simples. 
 
-* [Rmarkdown Cheatsheet](http://www.rstudio.com/wp-content/uploads/2016/03/rmarkdown-cheatsheet-2.0.pdf)
+```r
+diamonds %&gt;% ggplot() + geom_point(aes(x = carat, y = price))
+```
 
-- Pacote [Rmarkdown](https://rmarkdown.rstudio.com/) 
-- Pacote [knitr](http://yihui.name/knitr/)
-- [Rmarkdown Cheatsheet](http://www.rstudio.com/wp-content/uploads/2016/03/rmarkdown-cheatsheet-2.0.pdf)
+&lt;img src="index_files/figure-html/unnamed-chunk-18-1.png" style="display: block; margin: auto;" /&gt;
+---
+** Exemplo passo a passo 3: geom_point **
+  Podemos estabelecer um tamanho médio por pedra e classificá-las como pequenas ou grandes
+  
 
+```r
+diamonds %&gt;%
+   mutate(
+    tamanho = (x + y + z)/3,
+    tamanho = ifelse(tamanho &lt;= 6, "Pequena", "Grande")
+  ) %&gt;% 
+  filter(!is.na(tamanho)) %&gt;% 
+  ggplot() + 
+  geom_point(mapping = aes(x = carat, y = price, color = tamanho))
+```
+
+&lt;img src="index_files/figure-html/unnamed-chunk-19-1.png" style="display: block; margin: auto;" /&gt;
+---
+** Exemplo passo a passo 3: geom_point **
+
+Dois pontos importantes nesse exemplo:
+
+- Aqui fomos capazes de juntar os conceitos aprendidos até aqui do dplyr usando as funções mutate() e filter() juntamente com os as funções do ggplot2. Isso é extremamente comum quando estamos lidando com a visualização de dados.
+
+- O atributo color foi utilizado dentro da função aes(), pois temos a variável tamanho que precisa ser mapeada para ser representada no gráfico.
+
+---
+** Exemplo passo a passo 3: geom_point ** 
+  Outro exemplo
+
+
+```r
+diamonds %&gt;%
+   mutate(
+    compra = ifelse(cut == "Fair" &amp; price &gt;= 5000, "Não vale a pena comprar", "Top")) %&gt;% 
+  ggplot() + 
+  geom_point(mapping = aes(x = carat, y = price, color = compra))
+```
+
+&lt;img src="index_files/figure-html/unnamed-chunk-20-1.png" style="display: block; margin: auto;" /&gt;
+---
+** Desafio 3 **
+
+Plote um gráfico de dispersão das variáveis price e carat pintando os pontos de acordo com a qualidade do corte das pedras
+
+---
+** Desafio 3 **
+  Plote um gráfico de dispersão das variáveis price e carat pintando os pontos de acordo com a qualidade do corte das pedras
+  
+
+```r
+diamonds %&gt;% ggplot() + 
+  geom_point(mapping = aes(x = carat, y = price, color = cut))
+```
+
+&lt;img src="index_files/figure-html/unnamed-chunk-21-1.png" style="display: block; margin: auto;" /&gt;
+---
+# Atributos estéticos
+
+* A função aes() indica a relação entre os dados e cada aspecto visual do gráfico, ou seja, qual variável será representada no eixo x, no eixo y, o tipo de linha do gráfico, a cor e o tamanho dos componentes geométricos, etc.
+ 
+  * Os aspectos visuais mais utilizados incluem:
+ 
+**color=**: altera a cor de formas que não têm área (pontos e retas).
+
+**fill=**: altera a cor de formas com área (barras, caixas, densidades, áreas).
+
+**size=**: altera o tamanho de formas.
+
+**type=**: altera o tipo da forma, geralmente usada para pontos.
+
+**linetype=**: altera o tipo da linha.
+---
+# Formas geométricas
+  * Os _geoms_ basicamente definem o tipo de gráfico que queremos construir.
+  Os principais são:
+
+*geom_line* - para linhas definidas por pares (x,y).
+
+*geom_abline* - para retas definidas por um intercepto e uma inclinação.
+
+*geom_hline* - para retas horizontais.
+
+*geom_bar* - para barras.
+
+*geom_histogram* - para histogramas.
+
+*geom_boxplot* - para boxplots.
+
+*geom_density* - para densidades.
+
+*geom_area* - para áreas.
+---
+# Quais aspectos visuais utilizar para cada geom_ ?
+  * Depende do que se quer mostrar no gráfico e do que cada geom_ aceita como aspecto visual
+  * Porém, temos um gif muito bom para isso:
+  
+
+
+
+```r
+frameWidget(edgebundle(graph_from_data_frame(relationship), tension = 0.45, cutoff = 0.1, width = NULL, fontsize = 14,
+  padding = 110, nodesize = c(5, 20), directed = FALSE), height = "600")
+```
+
+<div id="htmlwidget-598f5cf9f67d2c886025" style="width:100%;height:600px;" class="widgetframe html-widget"></div>
+<script type="application/json" data-for="htmlwidget-598f5cf9f67d2c886025">{"x":{"url":"index_files/figure-html//widgets/widget_unnamed-chunk-23.html","options":{"xdomain":"*","allowfullscreen":false,"lazyload":false}},"evals":[],"jsHooks":[]}</script>
+[Fonte](https://www.yihanwu.ca/post/geoms-and-aesthetic-parameters/)
+---
+# Associando gráficos
+  Imagine que temos dois gráficos que mapeiam as mesmas variáveis:
+
+
+```r
+# esquerda
+diamonds %&gt;% 
+  ggplot() + 
+  geom_point(aes(x = carat, y = price))
+```
+
+&lt;img src="index_files/figure-html/unnamed-chunk-24-1.png" style="display: block; margin: auto;" /&gt;
+
+```r
+# direita
+diamonds %&gt;% 
+  ggplot() + 
+  geom_smooth(aes(x = carat, y = price))
+```
+
+```
+## `geom_smooth()` using method = 'gam' and formula 'y ~ s(x, bs = "cs")'
+```
+
+&lt;img src="index_files/figure-html/unnamed-chunk-25-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+# Associando gráficos
+  Podemos simplesmente escrever:
+
+```r
+# juntos
+diamonds %&gt;% 
+  ggplot() + 
+  geom_point(aes(x = carat, y = price)) +
+  geom_smooth(aes(x = carat, y = price))
+```
+
+```
+## `geom_smooth()` using method = 'gam' and formula 'y ~ s(x, bs = "cs")'
+```
+
+&lt;img src="index_files/figure-html/unnamed-chunk-26-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+# Associando gráficos
+  Podemos ainda especificar a função aes() dentro da função ggplot2 para não repetirmos ela duas vezes (e assim evitar possíveis erros, pois diferentes váriáveis podem ser mapeadas no gráfico)
+
+
+```r
+diamonds %&gt;% 
+  ggplot(aes(x = carat, y = price)) + 
+  geom_point(aes(color = color)) +
+  geom_smooth()
+```
+
+```
+## `geom_smooth()` using method = 'gam' and formula 'y ~ s(x, bs = "cs")'
+```
+
+&lt;img src="index_files/figure-html/unnamed-chunk-27-1.png" style="display: block; margin: auto;" /&gt;
+---
+# Associando gráficos
+  Podemos também reproduzir um mesmo gráfico para várias categorias de uma dada variável:
+
+
+```r
+diamonds %&gt;% 
+  ggplot(aes(x = carat, y = price)) + 
+  geom_point(aes(color = color)) +
+  geom_smooth() +
+  facet_wrap(~cut) #testar parametros ncol e nrow
+```
+
+```
+## `geom_smooth()` using method = 'gam' and formula 'y ~ s(x, bs = "cs")'
+```
+
+&lt;img src="index_files/figure-html/unnamed-chunk-28-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+** Desafio 4 **
+
+  Plote um gráfico de dispersão das variáveis price e carat pintando os pontos de acordo com a qualidade do corte das pedras juntamente com a linha de tendência desses pontos (e seu intervalo de confiança) para cada uma das categorias da variável color
+---
+** Desafio 4 - RESPOSTA **
+  Plote um gráfico de dispersão das variáveis price e carat pintando os pontos de acordo com a qualidade do corte das pedras juntamente com a linha de tendência desses pontos (e seu intervalo de confiança) para cada uma das categorias da variável color
+
+
+```r
+diamonds %&gt;% 
+  ggplot(mapping = aes(x = carat, y = price)) + 
+  geom_point(aes(color = cut)) +
+  geom_smooth() +
+  facet_wrap(~color)
+```
+
+```
+## `geom_smooth()` using method = 'gam' and formula 'y ~ s(x, bs = "cs")'
+```
+
+&lt;img src="index_files/figure-html/unnamed-chunk-29-1.png" style="display: block; margin: auto;" /&gt;
+---
+class:  inverse, center, middle
+## Temos mais um tempinho?
+---
+# Associando diferentes gráficos
+  Dessa vez precisamos de um pacote extra chamado patchwork
+
+```r
+#instale o pacote com esse comando:
+devtools::install_github("thomasp85/patchwork")
+```
+
+```
+## Downloading GitHub repo thomasp85/patchwork@master
+```
+
+```
+## R6 (2.3.0 -&gt; 2.4.0) [CRAN]
+```
+
+```
+## Installing 1 packages: R6
+```
+
+```
+## Installing package into '/home/beatrizmilz/R/x86_64-pc-linux-gnu-library/3.4'
+## (as 'lib' is unspecified)
+```
+
+```
+##   
+   checking for file ‘/tmp/RtmpXnW05r/remotes1cdc33e17242/thomasp85-patchwork-fd7958b/DESCRIPTION’ ...
+  
+✔  checking for file ‘/tmp/RtmpXnW05r/remotes1cdc33e17242/thomasp85-patchwork-fd7958b/DESCRIPTION’
+## ─  preparing ‘patchwork’:
+## ✔  checking DESCRIPTION meta-information
+## 
+  
+─  checking for LF line-endings in source and make files and shell scripts
+## 
+  
+─  checking for empty or unneeded directories
+## ─  building ‘patchwork_0.0.1.tar.gz’
+## 
+  
+   
+## 
+```
+
+```
+## Installing package into '/home/beatrizmilz/R/x86_64-pc-linux-gnu-library/3.4'
+## (as 'lib' is unspecified)
+```
+
+```r
+#carregue o pacote
+library(patchwork)
+```
+---
+** Desafio 5 - E ÚLTIMO! **
+
+Plote quaisquer dois gráficos usando o ggplot2 e salve cada um deles em um objeto chamado grafico1 e grafico2, respectivamente (pode ser os gráficos mais simples que vimos no começo, como o histograma e o gráfico de dispersão)
+
+---
+** Desafio 5 - RESPOSTA **
+
+```r
+grafico1 &lt;- diamonds %&gt;%  
+  ggplot(aes(x=clarity, fill=color)) +
+  geom_bar() + theme_bw() +
+  labs(title = "Cores dos diamantes por tipo de claridade", x = "Claridade do diamante", 
+    y = "Contagem", fill = "Cor")
+
+grafico2 &lt;- diamonds %&gt;% 
+  filter(color %in% c("E", "F", "G", "H", "I", "J")) %&gt;%
+  ggplot() + 
+  geom_boxplot(aes(x = color, y = price, fill = color), show.legend = FALSE) +
+  labs(title = "Boxplot das cores dos diamantes", x = "Cor do diamante", 
+    y = "Preço do diamante")
+
+grafico1 + grafico2
+```
+
+&lt;img src="index_files/figure-html/unnamed-chunk-31-1.png" style="display: block; margin: auto;" /&gt;
 ---
 ## Rmarkdown
 * Possibilita exportar diferentes tipos de arquivos.
@@ -663,7 +973,7 @@ plot(wt, mpg, main="Exemplo de Gráfico de Dispersão",
 xlab="Peso do Carro ", ylab="Milhas Por Galão ", pch=19)
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-29-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-44-1.png" style="display: block; margin: auto;" /&gt;
 ---
 class: middle
 # Exemplo: adicionando uma tabela simples
@@ -691,8 +1001,8 @@ DT::datatable(head(mtcars, 10),
   fillContainer = FALSE, options = list(pageLength = 5))
 ```
 
-<div id="htmlwidget-1b4ccca889984f8ea3fa" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-1b4ccca889984f8ea3fa">{"x":{"filter":"none","fillContainer":false,"data":[["Mazda RX4","Mazda RX4 Wag","Datsun 710","Hornet 4 Drive","Hornet Sportabout","Valiant","Duster 360","Merc 240D","Merc 230","Merc 280"],[21,21,22.8,21.4,18.7,18.1,14.3,24.4,22.8,19.2],[6,6,4,6,8,6,8,4,4,6],[160,160,108,258,360,225,360,146.7,140.8,167.6],[110,110,93,110,175,105,245,62,95,123],[3.9,3.9,3.85,3.08,3.15,2.76,3.21,3.69,3.92,3.92],[2.62,2.875,2.32,3.215,3.44,3.46,3.57,3.19,3.15,3.44],[16.46,17.02,18.61,19.44,17.02,20.22,15.84,20,22.9,18.3],[0,0,1,1,0,1,0,1,1,1],[1,1,1,0,0,0,0,0,0,0],[4,4,4,3,3,3,3,4,4,4],[4,4,1,1,2,1,4,2,2,4]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>mpg<\/th>\n      <th>cyl<\/th>\n      <th>disp<\/th>\n      <th>hp<\/th>\n      <th>drat<\/th>\n      <th>wt<\/th>\n      <th>qsec<\/th>\n      <th>vs<\/th>\n      <th>am<\/th>\n      <th>gear<\/th>\n      <th>carb<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":5,"columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5,6,7,8,9,10,11]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[5,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-0a70a712564bc6454320" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-0a70a712564bc6454320">{"x":{"filter":"none","fillContainer":false,"data":[["Mazda RX4","Mazda RX4 Wag","Datsun 710","Hornet 4 Drive","Hornet Sportabout","Valiant","Duster 360","Merc 240D","Merc 230","Merc 280"],[21,21,22.8,21.4,18.7,18.1,14.3,24.4,22.8,19.2],[6,6,4,6,8,6,8,4,4,6],[160,160,108,258,360,225,360,146.7,140.8,167.6],[110,110,93,110,175,105,245,62,95,123],[3.9,3.9,3.85,3.08,3.15,2.76,3.21,3.69,3.92,3.92],[2.62,2.875,2.32,3.215,3.44,3.46,3.57,3.19,3.15,3.44],[16.46,17.02,18.61,19.44,17.02,20.22,15.84,20,22.9,18.3],[0,0,1,1,0,1,0,1,1,1],[1,1,1,0,0,0,0,0,0,0],[4,4,4,3,3,3,3,4,4,4],[4,4,1,1,2,1,4,2,2,4]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>mpg<\/th>\n      <th>cyl<\/th>\n      <th>disp<\/th>\n      <th>hp<\/th>\n      <th>drat<\/th>\n      <th>wt<\/th>\n      <th>qsec<\/th>\n      <th>vs<\/th>\n      <th>am<\/th>\n      <th>gear<\/th>\n      <th>carb<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":5,"columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5,6,7,8,9,10,11]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[5,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
 ---
 class: middle
 # Adicionando imagens usando o Knitr

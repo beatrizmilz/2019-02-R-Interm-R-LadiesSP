@@ -1,0 +1,34 @@
+geom_area, x, y, alpha, fill, linetype, size
+geom_density, x, y, alpha, color, fill, linetype, size, weight
+geom_dotplot, x, y, alpha, color, fill
+geom_freqpoly, x, y, alpha, color, linetype, size
+geom_histogram, x, y, alpha, color, fill, linetype, size, weight
+geom_bar, x, alpha, color, fill, linetype, size, weight
+geom_polygon, x, y, alpha, color, fill, linetype, size
+geom_path, x, y, alpha, color, linetype, size
+geom_ribbon, x, ymax, ymin, alpha, color, fill, linetype, size
+geom_segment, x, xend, y, yend, alpha, color, linetype, size
+geom_rect, xmax, xmin, ymax, ymin, alpha, color, fill, linetype, size
+geom_jitter, x, y, alpha, color, fill, shape, size
+geom_point, x, y, alpha, color, fill, shape, size
+geom_quantile, x, y, alpha, color, linetype, size, weight
+geom_rug, alpha, color, linetype, size
+geom_smooth, x, y, alpha, color, fill, linetype, size, weight
+geom_text, x, y, alpha, angle, color, family, fontface, hjust, lineheight, size, vjust
+geom_boxplot, lower, middle, upper, x, ymax, ymin, alpha, color, fill, linetype, shape, size, weight
+geom_dotplot, x, y, alpha, color, fill
+geom_violin, x, y, alpha, color, fill, linetype, size, weight
+geom_bin2d, xmax, xmin, ymax, ymin, alpha, color, fill, linetype, size, weight
+geom_density2d, x, y, alpha, color, linetype, size
+geom_hex, x, y, alpha, color, fill, size
+geom_line, x, y, alpha, color, linetype, size
+geom_step, x, y, alpha, color, linetype, size
+geom_crossbar, x, y, ymax, alpha, color, fill, linetype, size
+geom_errorbar, x, ymax, ymin, alpha, color, linetype, size, width
+geom_linerange, x, ymin, ymax, alpha, color, linetype, size
+geom_pointrange, x, y, ymin, ymax, alpha, color, linetype, size
+geom_map, map_id, alpha, color, fill, linetype, size
+geom_blank,
+geom_contour, x, y, z, alpha, color, linetype, size, weight
+geom_raster, x, y, alpha, fill
+geom_tile, x, y, alpha, fill, linetype, size
