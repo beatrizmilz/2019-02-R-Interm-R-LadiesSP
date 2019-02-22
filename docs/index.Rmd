@@ -133,13 +133,12 @@ class:   middle
 
 - Introdução ao ggplot2 
 - Introdução ao RMarkdown
-
 ---
 class:   middle, center
 # Tidyverse
 ---
 
-# O Tidyverse
+### Relembrando: O Tidyverse
 
 É uma coleção de pacotes R projetados para a ciência de dados. Todos os pacotes compartilham uma mesma filosofia de desenvolvimento, sintaxe e estruturas de dados.
 
@@ -153,21 +152,82 @@ knitr::include_graphics("img/Tidyverse_packages.png")
 ```
 
 ---
-# Relembrando: Pipe (%>%)
 
-**Atalho**: CTRL + SHIFT + M
+### Pacotes do Tidyverse
+
+- **ggplot2**: cria gráficos <br></br>
+- **dplyr**: manipulação de dados <br></br>
+- **tidyr**: arruma os dados <br></br>
+- **readr**: leitura dos dados <br></br>
+- **purrr**: ferramentas para programação funcional, trabalha com funções e vetores <br></br>
+- **tibble**: dataframes moderno, mais simples de manipular <br></br>
+- **magrittr**: facilita a escrita e leitura do código <br></br>
+- **stringr**: trabalha com strings <br></br>
+- **forcats**: trabalha com fatores <br></br>
+- **lubridate**: trabalha com datas
 
 ---
-# Relembrando: dplyr
+
+### dplyr
 
 A ideia do pacote **dplyr** é tornar a manipulação de dados explícita utilizando verbos que indicam a ação a ser realizada. 
 
 O encadeamento dos verbos com o banco de dados é realizado com o operador **pipe**: **%>%**
 
 O dplyr foi desenhado para trabalhar com o operator pipe **%>%** do pacote magritrr.
+
 ---
 
-# Os 6 verbos do dplyr 
+### Pipe (%>%)
+
+**Atalho**: CTRL + SHIFT + M
+
+Pense no Pipe %>% como um operador que aplica as operações à direita nos valores que estão à esquerda.
+
+**Exemplo:**
+
+gosta_de_melancia <- df_turma_da_monica %>% 
+                      filter(personagem == "Magali")
+                      
+No código acima, temos um objeto chamado **gosta_de_melancia**, um dataset chamado **df_turma_da_monica** e uma operação de **filtro**.
+
+À direita do Pipe temos: filter(personagem == "Magali")
+
+À esquerda do Pipe temos: df_turma_da_monica
+
+Portanto, será aplicado o filtro personagem == "Magali" no dataset df_turma_da_monica. E o resultado dessa operação será atribuída ao objeto gosta_de_melancia.
+
+---
+
+### Importação de arquivos
+
+```{r, message=FALSE}
+library(tidyverse)
+
+# Uma outra opção é carregar somente o(s) pacote(s) que irá utilizar.
+#library(dplyr)
+
+# Importa o arquivo csv para o objeto df_titanic
+df_titanic <- read_csv("data/titanic.csv")
+
+```
+
+---
+
+### View e glimpse
+
+- Para visualizar um objeto: **View**(nome-do-objeto)
+
+- **glimpse()**: mostra informações como o número de observações (linhas) e variáveis (colunas), o nome das colunas, o tipo delas e os primeiros dados de cada coluna.
+
+```{r}
+df_titanic %>% glimpse()
+```
+
+---
+
+
+### Relembrando: Os 6 verbos do dplyr 
 
 - **filter**(): seleciona linhas
 
@@ -180,6 +240,156 @@ O dplyr foi desenhado para trabalhar com o operator pipe **%>%** do pacote magri
 - **summarise**(): sumariza/agrega colunas
 
 - **group_by**(): agrupa colunas
+
+---
+
+# filter
+
+Selecionar linhas da base de dados.
+
+```{r}
+# Seleciona os sobreviventes.
+df_titanic %>% filter(sobreviveu == "sim")
+```
+
+---
+
+# arrange
+
+Ordenar as linhas da base de dados conforme uma ou mais variáveis.
+
+```{r}
+# Ordena por ordem crescente da coluna nome.
+passageiros_ordenados <- df_titanic %>% arrange(nome)
+passageiros_ordenados
+```
+
+---
+
+# arrange 
+
+É possível ordenar na ordem descrescente e também por mais de uma variável.
+
+```{r}
+# Ordena por ordem decrescente de idade e por ordem crescente de nome.
+passageiros_ordenados <- df_titanic %>% arrange(desc(idade), nome)
+passageiros_ordenados
+```
+
+---
+
+# filter & arrange
+
+```{r}
+# Filtra os sobreviventes homens e ordena por classe.
+df_titanic  %>% 
+  filter(sexo == "masculino" & sobreviveu == "sim") %>% 
+  arrange(classe)
+```
+
+---
+
+# select
+
+Selecionar colunas (variáveis) da base de dados.
+
+```{r}
+# Seleciona as colunas indicadas.
+df_titanic %>% select(nome, idade, classe, embarque)
+```
+
+---
+
+# select
+
+O select tem várias funções úteis, como por exemplo:
+
+- **starts_with**("cla"): seleciona colunas que começam com "cla" <br></br>
+- **ends_with**("ifa"): seleciona colunas que terminam com "ifa" <br></br>
+- **contains**("ssa"): seleciona colunas que contêm "ssa" <br></br>
+
+---
+
+# select
+
+```{r}
+# Seleciona as colunas que começam com "id".
+df_titanic %>%  select(starts_with("id"))
+```
+
+---
+
+# select
+
+Ao inserir o caracter **-** na frente da coluna, você estará excluindo as colunas da seleção.
+
+```{r}
+df_titanic %>%  select(-id_passageiro, -nome)
+```
+
+---
+
+# mutate
+
+Criar ou modificar colunas de uma base de dados.
+
+Supondo que o valor da tarifa no dataset está em libras, e que 1£ = R$ 4.93, vamos descobrir qual é o valor das tarifas em reais.
+
+```{r}
+# Calcula a coluna tarifa para o valor da tarifa em reais e 
+# atribui ao objeto tarifa_conversao, 
+# o df_titanic e a coluna tarifa já calculada. 
+# Importante: neste caso a coluna tarifa do df_titanic não é alterada.
+tarifa_conversao <- df_titanic %>% mutate(tarifa = tarifa * 4.93)
+```
+
+```{r}
+# Cria uma nova variável chamada tarifa_real e
+# atribui ao objeto tarifa_conversao o df_titanic e 
+# mais a nova coluna tarifa_real.
+# Importante: neste caso não é criado uma nova coluna no df_titanic.
+tarifa_conversao <- df_titanic %>% mutate(tarifa_real = tarifa * 4.93)
+```
+
+---
+
+# summarize
+
+Sumariza colunas da base de dados, ou seja, resume os valores das colunas em um só valor,
+podendo ser a média, mediana, min, max, etc.
+
+```{r}
+# Calcula a média da variável idade
+# na.rm = TRUE remove os NAs
+df_titanic %>% summarize(mean(idade, na.rm=TRUE))
+
+```
+
+---
+
+# group_by + summarize
+
+Agrupa as colunas de uma base de dados. 
+
+O group_by é bastante utilizado com o summarize.
+
+```{r}
+# Agrupa pela variável sobreviveu e 
+# calcula o número de passageiros por grupo (sim/nao).
+# A função n() mostra o número de linhas em cada grupo.
+df_titanic %>% 
+  group_by(sobreviveu) %>% 
+  summarize(num_passageiros = n())
+```
+
+---
+
+class: middle
+
+#### Para relembrar e fazer os desafios de dplyr da oficina de R básico:
+
+
+- https://bit.ly/rladiesSP5
 
 ---
 - **Carregar o dataset**
