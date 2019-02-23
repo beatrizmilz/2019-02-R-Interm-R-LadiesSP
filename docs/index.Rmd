@@ -702,10 +702,11 @@ especificar  e combinar blocos de construção de um gráfico para criar pratica
 # Carregando a nossa base
 
 Vamos usar a base diamonds que já vem no pacote do ggplot2
-
-{r}
+```{r}
 DT::datatable(head(diamonds), fillContainer = FALSE)
 diamonds <- ggplot2::diamonds
+```
+
 ---
 
 ** Exemplo passo a passo - geom_histogram() **
