@@ -9,11 +9,6 @@ output:
     css: [default, rladies, robot-fonts]
     lib_dir: libs
     nature:
-      slideNumberFormat: |
-          <div class="progress-bar-container">
-          <div class="progress-bar" style="width: calc(%current% / %total% * 100%);">
-          </div>
-          </div>
       highlightStyle: github
       highlightLines: true
       countIncrementalSlides: false
@@ -27,29 +22,11 @@ knitr::opts_chunk$set(echo = TRUE, fig.align = "center")
 #pre {
  # max-width: 100%;
   #overflow-x: scroll;
-   #height: 10pc;
-  #overflow-y: scroll;
+      height: 100%;
+      overflow-y: scroll;
 #}
 ```
-<style>
-.remark-slide-number {
-  position: inherit;
-}
 
-.remark-slide-number .progress-bar-container {
-  position: absolute;
-  bottom: 0;
-  height: 4px;
-  display: block;
-  left: 0;
-  right: 0;
-}
-
-.remark-slide-number .progress-bar {
-  height: 100%;
-  background-color: red;
-}
-</style>
 class:  center, middle
 
 ##Organização e realização:
@@ -1269,7 +1246,7 @@ class: middle
 ## Exemplo: adicionando uma tabela
 ```{r}
 DT::datatable(head(mtcars, 10),
-  fillContainer = FALSE, options = list(pageLength = 5))
+  fillContainer = TRUE, options = list(pageLength = 5))
 ```
 ---
 class: middle
