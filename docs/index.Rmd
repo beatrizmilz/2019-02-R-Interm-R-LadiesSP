@@ -662,7 +662,9 @@ mtcars %>%
 ```
 ---
 class:  center, middle
-#[Cheatsheets :)](https://www.rstudio.com/resources/cheatsheets/)
+# [Cheatsheets :)](https://www.rstudio.com/resources/cheatsheets/)
+ 
+## [Materiais de estudo](https://github.com/beatrizmilz/materiais_estudo_R)
 
 ---
 class:  center, middle
