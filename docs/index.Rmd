@@ -703,7 +703,7 @@ especificar  e combinar blocos de construção de um gráfico para criar pratica
 
 ```{r}
 diamonds <- ggplot2::diamonds
-DT::datatable(head(diamonds), fillContainer = TRUE)
+DT::datatable(head(diamonds), fillContainer = FALSE)
 ```
 
 ---
