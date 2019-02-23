@@ -100,7 +100,9 @@ class:  center, middle
 
 [Meetup](https://www.meetup.com/pt-BR/R-Ladies-Sao-Paulo)
 
-Twitter: [@RLadiesGlobal](https://twitter.com/rladiesglobal)
+Twitter: [@RLadiesGlobal](https://twitter.com/rladiesglobal), [@RLadiesSaoPaulo](https://twitter.com/RLadiesSaoPaulo)
+
+Instagram: [@RLadiesSaoPaulo](http://instagram.com/RLadiesSaoPaulo)
 
 Website: [https://rladies.org/](https://rladies.org/)
 
