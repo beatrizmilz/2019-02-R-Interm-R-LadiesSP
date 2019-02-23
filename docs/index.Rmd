@@ -18,15 +18,6 @@ output:
 knitr::opts_chunk$set(echo = TRUE, fig.align = "center")
 ```
 
-```{css, echo=FALSE}
-#pre {
- # max-width: 100%;
-  #overflow-x: scroll;
-      height: 100%;
-      overflow-y: scroll;
-#}
-```
-
 class:  center, middle
 
 ##Organização e realização:
@@ -400,17 +391,17 @@ df_titanic %>%
 
 - Manipulação de observações 
 
-    - **filter()**, distinct(), sample_frac(), sample_frac(), slice()
-    - **arrange()**,desc(), add_row()
+    - **filter()**, distinct(), sample_frac(), sample_n(), slice(), top_n()
+    - **arrange()**, add_row()
 
 
 - Manipulação de variáveis
 
     - **select()**
-        - matches(), starts_with(), countains(), num_range(), everything()  
+        - matches(), num_range(), one_off(), everything()   
 
     - **mutate()**, mutate_at(), mutate_if(), transmute(), add_column(), rename()
-        - sum(), mean(), sd(), quantile(), n(), n_distinct(), if_else(), recode()
+        - sum(), median(), sd(), quantile(), n_distinct(), if_else(), recode()
 
 - Funções de síntese
 
@@ -429,25 +420,19 @@ class: middle
 class:  center, middle
 # Introdução ao Join
 ---
-**Carregar o dataset**
-
-Utilizaremos o dataset `diamonds`, que vem no pacote ggplot2. 
-```{r message=FALSE, warning=FALSE}
-library(tidyverse)
-#install.packages("ggplot2")
-library(ggplot2)
-diamonds <- ggplot2::diamonds
-DT::datatable(head(diamonds), fillContainer = TRUE)
-```
-
----
 # dplyr - combinando tabelas
 
 ```{r, collapse = T}
 band_members
+
 band_surnames <- tibble(surname = c("Jagger", "Lennon", "McCatney"))
+
+```
+
+```{r, collapse = T}
 bind_cols(band_members, band_surnames)
 ```
+
 
 ---
 # dplyr - combinando tabelas
@@ -481,7 +466,13 @@ knitr::include_graphics("img/dplyr_join_2.png")
 
 ```{r, collapse = T}
 band_members %>% glimpse()
+```
+
+```{r, collapse = T}
 band_instruments %>%  glimpse()
+```
+
+```{r, collapse = T}
 left_join(band_members, band_instruments, by = "name") %>% glimpse()
 ```
 
@@ -500,10 +491,14 @@ full_join(band_members, band_instruments, by = "name") %>% glimpse()
 ---
 # dplyr - mesclando tabelas
 
-
 ```{r, collapse = T}
 glimpse(band_members)
+```
+
+```{r, collapse = T}
 glimpse(band_instruments2)
+```
+```{r, collapse = T}
 left_join(band_members, band_instruments2, by=c("name"="artist")) %>% glimpse()
 ```
 
@@ -511,14 +506,14 @@ left_join(band_members, band_instruments2, by=c("name"="artist")) %>% glimpse()
 # dplyr - mesclando tabelas
 
 ```{r, collapse = T}
-base_A <- tibble(chave_nome_igual = c(1:3,NA), chave_nome_diferente_A = c(1:3,NA) , 
-            var_nome_igual = letters[1:4], var_nome_diferente_A = letters[1:4]) %>% 
+base_A <- tibble(chave_nome_igual= c(1:3,NA), chave_nome_diferente_A= c(1:3,NA) , 
+            var_nome_igual= letters[1:4], var_nome_diferente_A= letters[1:4]) %>% 
   glimpse()
 ```
 
 ```{r, collapse = T}
-base_B <- tibble(chave_nome_igual = c(2:4,NA), chave_nome_diferente_B = c(2:4,NA), 
-            var_nome_igual = letters[5:8], var_nome_diferente_B = letters[5:8]) %>% 
+base_B <- tibble(chave_nome_igual= c(2:4,NA), chave_nome_diferente_B= c(2:4,NA), 
+            var_nome_igual= letters[5:8], var_nome_diferente_B= letters[5:8]) %>% 
   glimpse()
 ```
 
@@ -529,8 +524,10 @@ base_B <- tibble(chave_nome_igual = c(2:4,NA), chave_nome_diferente_B = c(2:4,NA
 full_join(base_A, base_B, 
           by = c("chave_nome_igual" = "chave_nome_igual", 
                  "chave_nome_diferente_A" = "chave_nome_diferente_B"),
-          suffix =c(".A",".B")) %>% 
+          suffix =c(".A",".B"), 
+          na_matches = pkgconfig::get_config("dplyr::na_matches")) %>% 
   glimpse()
+
 ```
 
 ---
@@ -540,38 +537,127 @@ class:  center, middle
 ---
 # purrr - programação funcional
 
-> em construção
-R tem o core de uma linguagem funcional, 
-com uma natureza de soluções centrada em funções 
+O R é uma linguagem multi-paradigma: array, orientada a objectos, imperativo ... mas tem como cerne a linguagem funcional, e portanto uma natureza de soluções centrada em funções.  
 
 
-- faça para 1
-- crie a receita
-- faça para todos!
+<br>
 
 
----
-# purrr - map
-
-> em construção
-**map(.x,.f)** 
-
-Para cada ** .x ** faça ** .f **, onde:
+> **map(.x,.f)**: Para cada ** .x ** faça ** .f **, onde:
 - .x: vetor, uma lista, colunas de um data frame
-- .f: o céu é o limite :)
+- .f: função, fórmula ou vetor atômico
+
+
+
+
 ---
-# purrr - map & variações
-> em construção
-O **map()** sempre retorna uma lista, outras possibilidades:
+# purrr - map & exemplo
+
+```{r, echo = F, results = F}
+df_titanic <- df_titanic %>% ungroup
+```
+
+```{r, collapse = T}
+df_titanic2 <- df_titanic[1:9,c(1:3,11)]
+```
+
+- **map()** - aplica uma função a elementos (de listas ou vetores)
+
+```{r, collapse = T}
+df_titanic2 %>% map(is.na) %>%  map(sum)
+```
+
+```{r, collapse = T}
+#df_titanic2 %>% map(~sum(is.na(.)))
+#df_titanic2 %>% map( function(x) sum(is.na(x)) )
+```
+
+---
+# purrr - map + if
+
+- **map_if()** - aplica a função condicionalmente
+```{r, collapse = T} 
+df_titanic2 %>% map_if(is.character, as.factor)
+```
+
+
+
+---
+# purrr - map + at
+
+- **map_at()** - aplica a função aos elementos especificados por nome ou index
+```{r, collapse = T} 
+df_titanic2 %>% map_at("sobreviveu", as.factor)
+```
+
+
+---
+# purrr - map + n
+
+
+```{r, collapse = T} 
+x <- list(1, 2); y <- list(10, 20); z <- list(100, 200)
+```
+
+- **map2()** - aplica uma função a um par de elementos (de duas listas/vetores)
+```{r, collapse = T} 
+map2(x, y, ~ .x + .y)
+```
+
+- **pmap()** - aplica uma função a um grupo de elementos de um grupo de listas
+```{r, collapse = T} 
+pmap(list(x, y, z), sum)
+```
+
+
+---
+# purrr - possibilidades
+
+> o **map()** sempre retorna uma lista, mas você pode:
 
 - **map_lgl()** - lógico
 - **map_chr()** - caracter
 - **map_int()** - inteiro
 - **map_dbl()** - double
-- **map_dfr()** - 
-- **map_dfc()** - 
+- **map_df() ** - data frame
+- **map_dfr() ** - data frame (pelas linhas)
+- **map_dfc() ** - data frame (pelas colunas)
+- **walk()** - retorna o .x invisível (permite o uso do %>%)
+
+> ou ainda:
+
+- **modify_depth()** - aplica a função a cada elemento de um dado nível da lista
+- **cross2()** - obtem todas as combinações de .x e .y
+- **append()** - adiciona valores ao fim de uma lista
+- **flatten()** - remove um nível de index de uma lista
+- **...**
 
 
+---
+# purrr - aplicações
+
+> faça para 1, crie a receita, faça para todos!
+
+```{r, eval=F, warning = F}
+#ilustração - 1
+list.files("\diretório_yakult", pattern='*.xlsx') %>% 
+  map(read_excel) %>% 
+  walk(glimpse)
+
+
+#ilustração - 2
+f_inventada <- function(data, concorrentes, visualização){ }
+  dados %>% cross_df %>% pmap(f_inventada)
+
+    
+#ilustração - 3
+mtcars %>%
+  split(.$cyl) %>%
+  map(~ lm(mpg ~ wt, data = .x)) %>%
+  map(summary) %>%
+  map_dbl("r.squared")
+
+```
 
 
 ---
@@ -780,7 +866,7 @@ diamonds %>% ggplot() +
 
 *geom_area* - para áreas.
 ---
-# Quais aspectos visuais utilizar para cada geom_ ?
+**Quais aspectos visuais utilizar para cada geom_ ?**
   * Depende do que se quer mostrar no gráfico e do que cada geom_ aceita como aspecto visual
   * Porém, temos um gif muito bom para isso:
   
@@ -809,7 +895,7 @@ frameWidget(edgebundle(graph_from_data_frame(relationship), tension = 0.45, cuto
 ```
 [Fonte](https://www.yihanwu.ca/post/geoms-and-aesthetic-parameters/)
 ---
-# Associando gráficos
+**Associando gráficos**
   Imagine que temos dois gráficos que mapeiam as mesmas variáveis:
 
 ```{r}
@@ -826,7 +912,7 @@ diamonds %>%
 ```
 
 ---
-# Associando gráficos
+**Associando gráficos**
   Podemos simplesmente escrever:
 ```{r, warning=FALSE}
 # juntos
@@ -838,7 +924,7 @@ diamonds %>%
 ```
 
 ---
-# Associando gráficos
+**Associando gráficos**
   Podemos ainda especificar a função aes() dentro da função ggplot2 para não repetirmos ela duas vezes (e assim evitar possíveis erros, pois diferentes váriáveis podem ser mapeadas no gráfico)
 
 ```{r, warning=FALSE}
@@ -848,7 +934,7 @@ diamonds %>%
   geom_smooth()
 ```
 ---
-# Associando gráficos
+**Associando gráficos**
   Podemos também reproduzir um mesmo gráfico para várias categorias de uma dada variável:
 
 ```{r, warning=FALSE}
@@ -878,8 +964,8 @@ diamonds %>%
 class:  inverse, center, middle
 ## Temos mais um tempinho?
 ---
-# Associando diferentes gráficos
-  Dessa vez precisamos de um pacote extra chamado patchwork
+Associando diferentes gráficos
+ ** Dessa vez precisamos de um pacote extra chamado patchwork**
 ```{r}
 #instale o pacote com esse comando:
 devtools::install_github("thomasp85/patchwork")
@@ -1065,7 +1151,7 @@ knitr::include_graphics("img/knit.png")
 ### Desafio
 Crie um novo documento R Markdown. Delete todos os chuncks de código de R e escreva um pouco de Markdown (algumas seções, textos estilizados e lista com itens). 
 
-Converta o documento em uma webpage.
+Converta o documento em um  arquivo html.
 
 Você pode usar o [Rmarkdown Cheatsheet](http://www.rstudio.com/wp-content/uploads/2016/03/rmarkdown-cheatsheet-2.0.pdf) para referência.
 
@@ -1073,7 +1159,7 @@ Referência: [SW Carpentry](https://swcarpentry.github.io/r-novice-gapminder/15-
 
 ---
 class: middle
-#$ Mais de Markdown
+## Mais de Markdown
 
 Você pode fazer um hiperlink dessa forma: `[**texto para mostrar**](http://the-web-page.com)`.
 
@@ -1089,7 +1175,7 @@ Referência: [SW Carpentry](https://swcarpentry.github.io/r-novice-gapminder/15-
 
 ---
 class: middle
-#$ Chuncks de Código R
+## Chuncks de Código R
 
 Markdown é interessante e útil, mas seu real poder vem da combinação de Markdown com chuncks de códigos em R. 
 Isso  é o Markdown. Quando processado, o código em R será executado; se ele produz figuras, as figuras serão inseridas ao final do documento.
@@ -1164,14 +1250,14 @@ Referência: [SW Carpentry](https://swcarpentry.github.io/r-novice-gapminder/15-
 ---
 class: middle
 ## Opções globais de chunck
-Muitas vezes, haverá algumas opções que você irá querer repetir seu uso; para isso, você pode configurar as opções globais de chinck, como:  
+Muitas vezes, haverá algumas opções que você irá querer repetir seu uso; para isso, você pode configurar as opções globais de chunck, como:  
 
 
 ```{r echo=FALSE, fig.align='center'}
 knitr::include_graphics("img/chunk_global_options.png")
 ```
 
-A opção `fig.path` define onde as figuras serão salvas. A `/` é importante, pois sem ela, as figuras seriam salvas no local padroã, mas só com nomes que começam com Figs. 
+A opção `fig.path` define onde as figuras serão salvas. A `/` é importante, pois sem ela, as figuras seriam salvas no local padrão, mas só com nomes que começam com Figs. 
 
 
 
@@ -1179,7 +1265,7 @@ Referência: [SW Carpentry](https://swcarpentry.github.io/r-novice-gapminder/15-
 
 ---
 class: middle
-## Inline R code
+## Código R no texto
 Você pode fazer com que todo número em seu relatório seja reproduzível. 
 
 ```{r}
@@ -1320,7 +1406,7 @@ knitr::include_graphics("img/knit.png")
 ```
 
 Dica: Criando documentos em PDF
-Criando documentos em .pdf pode requerer a instalação de TeX. Se pedido, isso é detalhado numa mensagem de erro..
+Criando documentos em .pdf pode requerer a instalação de TeX. Se pedido, isso é detalhado numa mensagem de erro.
 
 
 
@@ -1338,11 +1424,14 @@ class: middle
 
 - Você pode fazer apresentações usando R, RMarkdown e KnitR - Use o pacote  [Xaringan](https://github.com/yihui/xaringan); (essa apresentação foi feita com Xaringan!)
 
-- Rmd compila em um formato HTML. Entoã você pode criar páginas html usando essa ferramenta. O pacote **[prettydoc](https://cran.r-project.org/web/packages/prettydoc/vignettes/architect.html)** cpode ajudar com alguns temas se você não sabe prgramar em HTML e CSS.
+- Rmd compila em um formato HTML. Entoã você pode criar páginas html usando essa ferramenta. O pacote **[prettydoc](https://cran.r-project.org/web/packages/prettydoc/vignettes/architect.html)**.
 
 
+- Pacote bookdown - escrever livros;
 
-- Veja a [galeria](https://rmarkdown.rstudio.com/gallery.html) for examples of what you can do with Rmarkdown.
+- Pacote blogdown - criar páginas na internet;
+
+- Veja a [galeria](https://rmarkdown.rstudio.com/gallery.html), lá tem exemplos do que dá pra fazer com Rmarkdown.
 
 - Veja mais: https://rmarkdown.rstudio.com/index.html
 

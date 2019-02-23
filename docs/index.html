@@ -7,6 +7,8 @@
     <link href="libs/remark-css-0.0.1/rladies.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/robot-fonts.css" rel="stylesheet" />
     <script src="libs/htmlwidgets-1.3/htmlwidgets.js"></script>
+    <script src="libs/pymjs-1.3.2/pym.v1.js"></script>
+    <script src="libs/widgetframe-binding-0.3.1/widgetframe.js"></script>
     <script src="libs/jquery-1.12.4/jquery.min.js"></script>
     <link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
     <script src="libs/datatables-binding-0.5/datatables.js"></script>
@@ -15,8 +17,6 @@
     <script src="libs/dt-core-1.10.16/js/jquery.dataTables.min.js"></script>
     <link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
     <script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
-    <script src="libs/pymjs-1.3.2/pym.v1.js"></script>
-    <script src="libs/widgetframe-binding-0.3.1/widgetframe.js"></script>
   </head>
   <body>
     <textarea id="source">
@@ -29,15 +29,6 @@ class: center, middle, inverse, title-slide
 ---
 
 
-
-&lt;style type="text/css"&gt;
-#pre {
- # max-width: 100%;
-  #overflow-x: scroll;
-      height: 100%;
-      overflow-y: scroll;
-#}
-&lt;/style&gt;
 
 class:  center, middle
 
@@ -568,17 +559,17 @@ df_titanic %&gt;%
 
 - Manipulação de observações 
 
-    - **filter()**, distinct(), sample_frac(), sample_frac(), slice()
-    - **arrange()**,desc(), add_row()
+    - **filter()**, distinct(), sample_frac(), sample_n(), slice(), top_n()
+    - **arrange()**, add_row()
 
 
 - Manipulação de variáveis
 
     - **select()**
-        - matches(), starts_with(), countains(), num_range(), everything()  
+        - matches(), num_range(), one_off(), everything()   
 
     - **mutate()**, mutate_at(), mutate_if(), transmute(), add_column(), rename()
-        - sum(), mean(), sd(), quantile(), n(), n_distinct(), if_else(), recode()
+        - sum(), median(), sd(), quantile(), n_distinct(), if_else(), recode()
 
 - Funções de síntese
 
@@ -597,22 +588,6 @@ class: middle
 class:  center, middle
 # Introdução ao Join
 ---
-**Carregar o dataset**
-
-Utilizaremos o dataset `diamonds`, que vem no pacote ggplot2. 
-
-```r
-library(tidyverse)
-#install.packages("ggplot2")
-library(ggplot2)
-diamonds &lt;- ggplot2::diamonds
-DT::datatable(head(diamonds), fillContainer = TRUE)
-```
-
-<div id="htmlwidget-dfd3af737f3af2e31c84" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-dfd3af737f3af2e31c84">{"x":{"filter":"none","fillContainer":true,"data":[["1","2","3","4","5","6"],[0.23,0.21,0.23,0.29,0.31,0.24],["Ideal","Premium","Good","Premium","Good","Very Good"],["E","E","E","I","J","J"],["SI2","SI1","VS1","VS2","SI2","VVS2"],[61.5,59.8,56.9,62.4,63.3,62.8],[55,61,65,58,58,57],[326,326,327,334,335,336],[3.95,3.89,4.05,4.2,4.34,3.94],[3.98,3.84,4.07,4.23,4.35,3.96],[2.43,2.31,2.31,2.63,2.75,2.48]],"container":"<table class=\"display fill-container\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>carat<\/th>\n      <th>cut<\/th>\n      <th>color<\/th>\n      <th>clarity<\/th>\n      <th>depth<\/th>\n      <th>table<\/th>\n      <th>price<\/th>\n      <th>x<\/th>\n      <th>y<\/th>\n      <th>z<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,5,6,7,8,9,10]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
-
----
 # dplyr - combinando tabelas
 
 
@@ -624,7 +599,12 @@ band_members
 ## 1 Mick  Stones 
 ## 2 John  Beatles
 ## 3 Paul  Beatles
+
 band_surnames &lt;- tibble(surname = c("Jagger", "Lennon", "McCatney"))
+```
+
+
+```r
 bind_cols(band_members, band_surnames)
 ## # A tibble: 3 x 3
 ##   name  band    surname 
@@ -633,6 +613,7 @@ bind_cols(band_members, band_surnames)
 ## 2 John  Beatles Lennon  
 ## 3 Paul  Beatles McCatney
 ```
+
 
 ---
 # dplyr - combinando tabelas
@@ -665,11 +646,19 @@ band_members %&gt;% glimpse()
 ## Variables: 2
 ## $ name &lt;chr&gt; "Mick", "John", "Paul"
 ## $ band &lt;chr&gt; "Stones", "Beatles", "Beatles"
+```
+
+
+```r
 band_instruments %&gt;%  glimpse()
 ## Observations: 3
 ## Variables: 2
 ## $ name  &lt;chr&gt; "John", "Paul", "Keith"
 ## $ plays &lt;chr&gt; "guitar", "bass", "guitar"
+```
+
+
+```r
 left_join(band_members, band_instruments, by = "name") %&gt;% glimpse()
 ## Observations: 3
 ## Variables: 3
@@ -711,18 +700,24 @@ full_join(band_members, band_instruments, by = "name") %&gt;% glimpse()
 # dplyr - mesclando tabelas
 
 
-
 ```r
 glimpse(band_members)
 ## Observations: 3
 ## Variables: 2
 ## $ name &lt;chr&gt; "Mick", "John", "Paul"
 ## $ band &lt;chr&gt; "Stones", "Beatles", "Beatles"
+```
+
+
+```r
 glimpse(band_instruments2)
 ## Observations: 3
 ## Variables: 2
 ## $ artist &lt;chr&gt; "John", "Paul", "Keith"
 ## $ plays  &lt;chr&gt; "guitar", "bass", "guitar"
+```
+
+```r
 left_join(band_members, band_instruments2, by=c("name"="artist")) %&gt;% glimpse()
 ## Observations: 3
 ## Variables: 3
@@ -736,8 +731,8 @@ left_join(band_members, band_instruments2, by=c("name"="artist")) %&gt;% glimpse
 
 
 ```r
-base_A &lt;- tibble(chave_nome_igual = c(1:3,NA), chave_nome_diferente_A = c(1:3,NA) , 
-            var_nome_igual = letters[1:4], var_nome_diferente_A = letters[1:4]) %&gt;% 
+base_A &lt;- tibble(chave_nome_igual= c(1:3,NA), chave_nome_diferente_A= c(1:3,NA) , 
+            var_nome_igual= letters[1:4], var_nome_diferente_A= letters[1:4]) %&gt;% 
   glimpse()
 ## Observations: 4
 ## Variables: 4
@@ -749,8 +744,8 @@ base_A &lt;- tibble(chave_nome_igual = c(1:3,NA), chave_nome_diferente_A = c(1:3
 
 
 ```r
-base_B &lt;- tibble(chave_nome_igual = c(2:4,NA), chave_nome_diferente_B = c(2:4,NA), 
-            var_nome_igual = letters[5:8], var_nome_diferente_B = letters[5:8]) %&gt;% 
+base_B &lt;- tibble(chave_nome_igual= c(2:4,NA), chave_nome_diferente_B= c(2:4,NA), 
+            var_nome_igual= letters[5:8], var_nome_diferente_B= letters[5:8]) %&gt;% 
   glimpse()
 ## Observations: 4
 ## Variables: 4
@@ -768,7 +763,8 @@ base_B &lt;- tibble(chave_nome_igual = c(2:4,NA), chave_nome_diferente_B = c(2:4
 full_join(base_A, base_B, 
           by = c("chave_nome_igual" = "chave_nome_igual", 
                  "chave_nome_diferente_A" = "chave_nome_diferente_B"),
-          suffix =c(".A",".B")) %&gt;% 
+          suffix =c(".A",".B"), 
+          na_matches = pkgconfig::get_config("dplyr::na_matches")) %&gt;% 
   glimpse()
 ## Observations: 5
 ## Variables: 6
@@ -787,38 +783,179 @@ class:  center, middle
 ---
 # purrr - programação funcional
 
-&gt; em construção
-R tem o core de uma linguagem funcional, 
-com uma natureza de soluções centrada em funções 
+O R é uma linguagem multi-paradigma: array, orientada a objectos, imperativo ... mas tem como cerne a linguagem funcional, e portanto uma natureza de soluções centrada em funções.  
 
 
-- faça para 1
-- crie a receita
-- faça para todos!
+&lt;br&gt;
 
 
----
-# purrr - map
-
-&gt; em construção
-**map(.x,.f)** 
-
-Para cada ** .x ** faça ** .f **, onde:
+&gt; **map(.x,.f)**: Para cada ** .x ** faça ** .f **, onde:
 - .x: vetor, uma lista, colunas de um data frame
-- .f: o céu é o limite :)
+- .f: função, fórmula ou vetor atômico
+
+
+
+
 ---
-# purrr - map &amp; variações
-&gt; em construção
-O **map()** sempre retorna uma lista, outras possibilidades:
+# purrr - map &amp; exemplo
+
+
+
+
+```r
+df_titanic2 &lt;- df_titanic[1:9,c(1:3,11)]
+```
+
+- **map()** - aplica uma função a elementos (de listas ou vetores)
+
+
+```r
+df_titanic2 %&gt;% map(is.na) %&gt;%  map(sum)
+## $id_passageiro
+## [1] 0
+## 
+## $sobreviveu
+## [1] 0
+## 
+## $classe
+## [1] 0
+## 
+## $cabine
+## [1] 6
+```
+
+
+```r
+#df_titanic2 %&gt;% map(~sum(is.na(.)))
+#df_titanic2 %&gt;% map( function(x) sum(is.na(x)) )
+```
+
+---
+# purrr - map + if
+
+- **map_if()** - aplica a função condicionalmente
+
+```r
+df_titanic2 %&gt;% map_if(is.character, as.factor)
+## $id_passageiro
+## [1] 1 2 3 4 5 6 7 8 9
+## 
+## $sobreviveu
+## [1] nao sim sim sim nao nao nao nao sim
+## Levels: nao sim
+## 
+## $classe
+## [1] 3 1 3 1 3 3 1 3 3
+## 
+## $cabine
+## [1] &lt;NA&gt; C85  &lt;NA&gt; C123 &lt;NA&gt; &lt;NA&gt; E46  &lt;NA&gt; &lt;NA&gt;
+## Levels: C123 C85 E46
+```
+
+
+
+---
+# purrr - map + at
+
+- **map_at()** - aplica a função aos elementos especificados por nome ou index
+
+```r
+df_titanic2 %&gt;% map_at("sobreviveu", as.factor)
+## $id_passageiro
+## [1] 1 2 3 4 5 6 7 8 9
+## 
+## $sobreviveu
+## [1] nao sim sim sim nao nao nao nao sim
+## Levels: nao sim
+## 
+## $classe
+## [1] 3 1 3 1 3 3 1 3 3
+## 
+## $cabine
+## [1] NA     "C85"  NA     "C123" NA     NA     "E46"  NA     NA
+```
+
+
+---
+# purrr - map + n
+
+
+
+```r
+x &lt;- list(1, 2); y &lt;- list(10, 20); z &lt;- list(100, 200)
+```
+
+- **map2()** - aplica uma função a um par de elementos (de duas listas/vetores)
+
+```r
+map2(x, y, ~ .x + .y)
+## [[1]]
+## [1] 11
+## 
+## [[2]]
+## [1] 22
+```
+
+- **pmap()** - aplica uma função a um grupo de elementos de um grupo de listas
+
+```r
+pmap(list(x, y, z), sum)
+## [[1]]
+## [1] 111
+## 
+## [[2]]
+## [1] 222
+```
+
+
+---
+# purrr - possibilidades
+
+&gt; o **map()** sempre retorna uma lista, mas você pode:
 
 - **map_lgl()** - lógico
 - **map_chr()** - caracter
 - **map_int()** - inteiro
 - **map_dbl()** - double
-- **map_dfr()** - 
-- **map_dfc()** - 
+- **map_df() ** - data frame
+- **map_dfr() ** - data frame (pelas linhas)
+- **map_dfc() ** - data frame (pelas colunas)
+- **walk()** - retorna o .x invisível (permite o uso do %&gt;%)
+
+&gt; ou ainda:
+
+- **modify_depth()** - aplica a função a cada elemento de um dado nível da lista
+- **cross2()** - obtem todas as combinações de .x e .y
+- **append()** - adiciona valores ao fim de uma lista
+- **flatten()** - remove um nível de index de uma lista
+- **...**
 
 
+---
+# purrr - aplicações
+
+&gt; faça para 1, crie a receita, faça para todos!
+
+
+```r
+#ilustração - 1
+list.files("\diretório_yakult", pattern='*.xlsx') %&gt;% 
+  map(read_excel) %&gt;% 
+  walk(glimpse)
+
+
+#ilustração - 2
+f_inventada &lt;- function(data, concorrentes, visualização){ }
+  dados %&gt;% cross_df %&gt;% pmap(f_inventada)
+
+    
+#ilustração - 3
+mtcars %&gt;%
+  split(.$cyl) %&gt;%
+  map(~ lm(mpg ~ wt, data = .x)) %&gt;%
+  map(summary) %&gt;%
+  map_dbl("r.squared")
+```
 
 
 ---
@@ -866,7 +1003,7 @@ especificar  e combinar blocos de construção de um gráfico para criar pratica
 diamonds %&gt;% ggplot() #usando o pipe
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-34-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-47-1.png" style="display: block; margin: auto;" /&gt;
 ---
 ** Exemplo passo a passo - geom_histogram() **
   Porém, para construirmos o gráfico precisamos dizer como as observações das nossas variáveis serão representadas no gráfico e e para isso usamos a camada de mapeamento estético.
@@ -882,7 +1019,7 @@ diamonds %&gt;% ggplot() +
 ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-35-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-48-1.png" style="display: block; margin: auto;" /&gt;
 ---
 ** Desafio 1 **
   Plotar a distribuição de frequências (também conhecida como histograma) da variável price
@@ -902,7 +1039,7 @@ diamonds %&gt;% ggplot() +
 ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-36-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-49-1.png" style="display: block; margin: auto;" /&gt;
 ---
 ** Exemplo passo a passo 2: geom_bar **
   Para variáveis categóricas, ou seja, aquelas que representam uma categoria como qualidade (bom, ruim), sexo(M, F) ou no nosso caso, a qualidade do corte da pedra, podemos usar um gráfico de barras
@@ -913,7 +1050,7 @@ diamonds %&gt;% ggplot() +
   geom_bar(aes(x=cut))
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-37-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-50-1.png" style="display: block; margin: auto;" /&gt;
 ---
 ** Exemplo passo a passo 2: geom_bar **
   Podemos preencher as colunas com a informação sobre a cor das pedras
@@ -924,7 +1061,7 @@ diamonds %&gt;% ggplot()+
   geom_bar(aes(x=cut, fill=color))
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-38-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-51-1.png" style="display: block; margin: auto;" /&gt;
 ---
 ** Exemplo passo a passo 2: geom_bar **
   Com a camada theme_bw() podemos mudar o fundo do nosso gráfico
@@ -935,7 +1072,7 @@ diamonds %&gt;% ggplot() +
   geom_bar(aes(x=cut, fill=color)) + theme_bw()
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-39-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-52-1.png" style="display: block; margin: auto;" /&gt;
 ---
 ** Exemplo passo a passo 2: geom_bar **
   Usando a função labs() podemos inserir títulos e legendas apropriadas para nosso gráfico
@@ -948,7 +1085,7 @@ diamonds %&gt;%  ggplot(aes(x=cut, fill=color)) +
     y = "Contagem", fill = "Cor")
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-40-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-53-1.png" style="display: block; margin: auto;" /&gt;
 ---
 ** Desafio 2 **
   Plote um gráfico de barras da váriavel claridade da pedra incluindo a informação sobre a cor da pedra para cada tipo de claridade de pedra. Use também legendas apropriadas 
@@ -965,7 +1102,7 @@ diamonds %&gt;%  ggplot(aes(x=clarity, fill=color)) +
     y = "Contagem", fill = "Cor")
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-41-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-54-1.png" style="display: block; margin: auto;" /&gt;
 ---
 ** Exemplo passo a passo 3: geom_point **
 
@@ -974,7 +1111,7 @@ diamonds %&gt;%  ggplot(aes(x=clarity, fill=color)) +
 diamonds %&gt;% ggplot() + geom_point(aes(x = carat, y = price))
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-42-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-55-1.png" style="display: block; margin: auto;" /&gt;
 ---
 ** Exemplo passo a passo 3: geom_point **
   Podemos estabelecer um tamanho médio por pedra e classificá-las como pequenas ou grandes
@@ -991,7 +1128,7 @@ diamonds %&gt;%
   geom_point(mapping = aes(x = carat, y = price, color = tamanho))
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-43-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-56-1.png" style="display: block; margin: auto;" /&gt;
 ---
 ** Exemplo passo a passo 3: geom_point **
 
@@ -1014,7 +1151,7 @@ diamonds %&gt;%
   geom_point(mapping = aes(x = carat, y = price, color = compra))
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-44-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-57-1.png" style="display: block; margin: auto;" /&gt;
 ---
 ** Desafio 3 **
 
@@ -1030,7 +1167,7 @@ diamonds %&gt;% ggplot() +
   geom_point(mapping = aes(x = carat, y = price, color = cut))
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-45-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-58-1.png" style="display: block; margin: auto;" /&gt;
 ---
 # Atributos estéticos
 
@@ -1068,7 +1205,7 @@ diamonds %&gt;% ggplot() +
 
 *geom_area* - para áreas.
 ---
-# Quais aspectos visuais utilizar para cada geom_ ?
+**Quais aspectos visuais utilizar para cada geom_ ?**
   * Depende do que se quer mostrar no gráfico e do que cada geom_ aceita como aspecto visual
   * Porém, temos um gif muito bom para isso:
   
@@ -1080,11 +1217,11 @@ frameWidget(edgebundle(graph_from_data_frame(relationship), tension = 0.45, cuto
   padding = 110, nodesize = c(5, 20), directed = FALSE), height = "600")
 ```
 
-<div id="htmlwidget-46aa929a043c056b7b98" style="width:100%;height:600px;" class="widgetframe html-widget"></div>
-<script type="application/json" data-for="htmlwidget-46aa929a043c056b7b98">{"x":{"url":"index_files/figure-html//widgets/widget_unnamed-chunk-47.html","options":{"xdomain":"*","allowfullscreen":false,"lazyload":false}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-d92aa0d839d93d0470f4" style="width:100%;height:600px;" class="widgetframe html-widget"></div>
+<script type="application/json" data-for="htmlwidget-d92aa0d839d93d0470f4">{"x":{"url":"index_files/figure-html//widgets/widget_unnamed-chunk-60.html","options":{"xdomain":"*","allowfullscreen":false,"lazyload":false}},"evals":[],"jsHooks":[]}</script>
 [Fonte](https://www.yihanwu.ca/post/geoms-and-aesthetic-parameters/)
 ---
-# Associando gráficos
+**Associando gráficos**
   Imagine que temos dois gráficos que mapeiam as mesmas variáveis:
 
 
@@ -1095,7 +1232,7 @@ diamonds %&gt;%
   geom_point(aes(x = carat, y = price))
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-48-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-61-1.png" style="display: block; margin: auto;" /&gt;
 
 ```r
 # direita
@@ -1108,10 +1245,10 @@ diamonds %&gt;%
 ## `geom_smooth()` using method = 'gam' and formula 'y ~ s(x, bs = "cs")'
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-49-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-62-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
-# Associando gráficos
+**Associando gráficos**
   Podemos simplesmente escrever:
 
 ```r
@@ -1126,10 +1263,10 @@ diamonds %&gt;%
 ## `geom_smooth()` using method = 'gam' and formula 'y ~ s(x, bs = "cs")'
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-50-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-63-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
-# Associando gráficos
+**Associando gráficos**
   Podemos ainda especificar a função aes() dentro da função ggplot2 para não repetirmos ela duas vezes (e assim evitar possíveis erros, pois diferentes váriáveis podem ser mapeadas no gráfico)
 
 
@@ -1144,9 +1281,9 @@ diamonds %&gt;%
 ## `geom_smooth()` using method = 'gam' and formula 'y ~ s(x, bs = "cs")'
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-51-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-64-1.png" style="display: block; margin: auto;" /&gt;
 ---
-# Associando gráficos
+**Associando gráficos**
   Podemos também reproduzir um mesmo gráfico para várias categorias de uma dada variável:
 
 
@@ -1162,7 +1299,7 @@ diamonds %&gt;%
 ## `geom_smooth()` using method = 'gam' and formula 'y ~ s(x, bs = "cs")'
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-52-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-65-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 ** Desafio 4 **
@@ -1185,13 +1322,13 @@ diamonds %&gt;%
 ## `geom_smooth()` using method = 'gam' and formula 'y ~ s(x, bs = "cs")'
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-53-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-66-1.png" style="display: block; margin: auto;" /&gt;
 ---
 class:  inverse, center, middle
 ## Temos mais um tempinho?
 ---
-# Associando diferentes gráficos
-  Dessa vez precisamos de um pacote extra chamado patchwork
+Associando diferentes gráficos
+ ** Dessa vez precisamos de um pacote extra chamado patchwork**
 
 ```r
 #instale o pacote com esse comando:
@@ -1232,7 +1369,7 @@ grafico2 &lt;- diamonds %&gt;%
 grafico1 + grafico2
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-55-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-68-1.png" style="display: block; margin: auto;" /&gt;
 
 
 
@@ -1381,7 +1518,7 @@ Você compila o documento de RMarkdown para uma página html ao clicar no botão
 ### Desafio
 Crie um novo documento R Markdown. Delete todos os chuncks de código de R e escreva um pouco de Markdown (algumas seções, textos estilizados e lista com itens). 
 
-Converta o documento em uma webpage.
+Converta o documento em um  arquivo html.
 
 Você pode usar o [Rmarkdown Cheatsheet](http://www.rstudio.com/wp-content/uploads/2016/03/rmarkdown-cheatsheet-2.0.pdf) para referência.
 
@@ -1389,7 +1526,7 @@ Referência: [SW Carpentry](https://swcarpentry.github.io/r-novice-gapminder/15-
 
 ---
 class: middle
-#$ Mais de Markdown
+## Mais de Markdown
 
 Você pode fazer um hiperlink dessa forma: `[**texto para mostrar**](http://the-web-page.com)`.
 
@@ -1405,7 +1542,7 @@ Referência: [SW Carpentry](https://swcarpentry.github.io/r-novice-gapminder/15-
 
 ---
 class: middle
-#$ Chuncks de Código R
+## Chuncks de Código R
 
 Markdown é interessante e útil, mas seu real poder vem da combinação de Markdown com chuncks de códigos em R. 
 Isso  é o Markdown. Quando processado, o código em R será executado; se ele produz figuras, as figuras serão inseridas ao final do documento.
@@ -1472,12 +1609,12 @@ Referência: [SW Carpentry](https://swcarpentry.github.io/r-novice-gapminder/15-
 ---
 class: middle
 ## Opções globais de chunck
-Muitas vezes, haverá algumas opções que você irá querer repetir seu uso; para isso, você pode configurar as opções globais de chinck, como:  
+Muitas vezes, haverá algumas opções que você irá querer repetir seu uso; para isso, você pode configurar as opções globais de chunck, como:  
 
 
 &lt;img src="img/chunk_global_options.png" width="788" style="display: block; margin: auto;" /&gt;
 
-A opção `fig.path` define onde as figuras serão salvas. A `/` é importante, pois sem ela, as figuras seriam salvas no local padroã, mas só com nomes que começam com Figs. 
+A opção `fig.path` define onde as figuras serão salvas. A `/` é importante, pois sem ela, as figuras seriam salvas no local padrão, mas só com nomes que começam com Figs. 
 
 
 
@@ -1485,7 +1622,7 @@ Referência: [SW Carpentry](https://swcarpentry.github.io/r-novice-gapminder/15-
 
 ---
 class: middle
-## Inline R code
+## Código R no texto
 Você pode fazer com que todo número em seu relatório seja reproduzível. 
 
 
@@ -1553,7 +1690,7 @@ plot(wt, mpg, main="Exemplo de Gráfico de Dispersão",
 xlab="Peso do Carro ", ylab="Milhas Por Galão ", pch=19)
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-69-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-82-1.png" style="display: block; margin: auto;" /&gt;
 ---
 class: middle
 ## Exemplo: adicionando uma tabela simples
@@ -1581,8 +1718,8 @@ DT::datatable(head(mtcars, 10),
   fillContainer = TRUE, options = list(pageLength = 5))
 ```
 
-<div id="htmlwidget-240a0ae9350c7b13a46a" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-240a0ae9350c7b13a46a">{"x":{"filter":"none","fillContainer":true,"data":[["Mazda RX4","Mazda RX4 Wag","Datsun 710","Hornet 4 Drive","Hornet Sportabout","Valiant","Duster 360","Merc 240D","Merc 230","Merc 280"],[21,21,22.8,21.4,18.7,18.1,14.3,24.4,22.8,19.2],[6,6,4,6,8,6,8,4,4,6],[160,160,108,258,360,225,360,146.7,140.8,167.6],[110,110,93,110,175,105,245,62,95,123],[3.9,3.9,3.85,3.08,3.15,2.76,3.21,3.69,3.92,3.92],[2.62,2.875,2.32,3.215,3.44,3.46,3.57,3.19,3.15,3.44],[16.46,17.02,18.61,19.44,17.02,20.22,15.84,20,22.9,18.3],[0,0,1,1,0,1,0,1,1,1],[1,1,1,0,0,0,0,0,0,0],[4,4,4,3,3,3,3,4,4,4],[4,4,1,1,2,1,4,2,2,4]],"container":"<table class=\"display fill-container\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>mpg<\/th>\n      <th>cyl<\/th>\n      <th>disp<\/th>\n      <th>hp<\/th>\n      <th>drat<\/th>\n      <th>wt<\/th>\n      <th>qsec<\/th>\n      <th>vs<\/th>\n      <th>am<\/th>\n      <th>gear<\/th>\n      <th>carb<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":5,"columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5,6,7,8,9,10,11]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[5,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-330a3a37c744515ef9d1" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-330a3a37c744515ef9d1">{"x":{"filter":"none","fillContainer":true,"data":[["Mazda RX4","Mazda RX4 Wag","Datsun 710","Hornet 4 Drive","Hornet Sportabout","Valiant","Duster 360","Merc 240D","Merc 230","Merc 280"],[21,21,22.8,21.4,18.7,18.1,14.3,24.4,22.8,19.2],[6,6,4,6,8,6,8,4,4,6],[160,160,108,258,360,225,360,146.7,140.8,167.6],[110,110,93,110,175,105,245,62,95,123],[3.9,3.9,3.85,3.08,3.15,2.76,3.21,3.69,3.92,3.92],[2.62,2.875,2.32,3.215,3.44,3.46,3.57,3.19,3.15,3.44],[16.46,17.02,18.61,19.44,17.02,20.22,15.84,20,22.9,18.3],[0,0,1,1,0,1,0,1,1,1],[1,1,1,0,0,0,0,0,0,0],[4,4,4,3,3,3,3,4,4,4],[4,4,1,1,2,1,4,2,2,4]],"container":"<table class=\"display fill-container\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>mpg<\/th>\n      <th>cyl<\/th>\n      <th>disp<\/th>\n      <th>hp<\/th>\n      <th>drat<\/th>\n      <th>wt<\/th>\n      <th>qsec<\/th>\n      <th>vs<\/th>\n      <th>am<\/th>\n      <th>gear<\/th>\n      <th>carb<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":5,"columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5,6,7,8,9,10,11]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[5,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
 ---
 class: middle
 ## Adicionando imagens usando o Knitr
@@ -1651,7 +1788,7 @@ Você também pode converter o R Markdown para PDF ou um documento Word. Clique 
 &lt;img src="img/knit.png" width="276" style="display: block; margin: auto;" /&gt;
 
 Dica: Criando documentos em PDF
-Criando documentos em .pdf pode requerer a instalação de TeX. Se pedido, isso é detalhado numa mensagem de erro..
+Criando documentos em .pdf pode requerer a instalação de TeX. Se pedido, isso é detalhado numa mensagem de erro.
 
 
 
@@ -1669,11 +1806,14 @@ class: middle
 
 - Você pode fazer apresentações usando R, RMarkdown e KnitR - Use o pacote  [Xaringan](https://github.com/yihui/xaringan); (essa apresentação foi feita com Xaringan!)
 
-- Rmd compila em um formato HTML. Entoã você pode criar páginas html usando essa ferramenta. O pacote **[prettydoc](https://cran.r-project.org/web/packages/prettydoc/vignettes/architect.html)** cpode ajudar com alguns temas se você não sabe prgramar em HTML e CSS.
+- Rmd compila em um formato HTML. Entoã você pode criar páginas html usando essa ferramenta. O pacote **[prettydoc](https://cran.r-project.org/web/packages/prettydoc/vignettes/architect.html)**.
 
 
+- Pacote bookdown - escrever livros;
 
-- Veja a [galeria](https://rmarkdown.rstudio.com/gallery.html) for examples of what you can do with Rmarkdown.
+- Pacote blogdown - criar páginas na internet;
+
+- Veja a [galeria](https://rmarkdown.rstudio.com/gallery.html), lá tem exemplos do que dá pra fazer com Rmarkdown.
 
 - Veja mais: https://rmarkdown.rstudio.com/index.html
 
