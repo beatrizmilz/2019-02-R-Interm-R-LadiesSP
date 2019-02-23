@@ -1010,6 +1010,20 @@ grafico1 + grafico2
 ---
 class:  center, middle
 # Introdução ao Rmarkdown
+---
+
+## Rmarkdown
+* É um tipo de arquivo que suporta códigos em R, texto, markdown e outros formatos.
+
+* Apresenta os seus códigos, o resultado, e também os seus comentários.
+
+* Arquivos **.Rmd** são reprodutíveis.
+
+* São interessantes para trabalhar em equipe, para comunicar seus resultados, e para desenvolver seus códigos em R.
+
+* O markdown é uma linguagem de marcação simples. 
+
+* [Rmarkdown Cheatsheet](http://www.rstudio.com/wp-content/uploads/2016/03/rmarkdown-cheatsheet-2.0.pdf)
 
 ---
 ## Rmarkdown
