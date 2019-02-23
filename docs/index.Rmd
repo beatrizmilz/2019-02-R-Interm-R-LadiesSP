@@ -883,7 +883,7 @@ diamonds %>% ggplot() +
 ---
 **Quais aspectos visuais utilizar para cada geom_ ?**
   * Depende do que se quer mostrar no gráfico e do que cada geom_ aceita como aspecto visual
-  * Porém, temos um gif muito bom para isso:
+  * Porém, temos um gif muito bom para isso [link aqui](https://www.yihanwu.ca/post/geoms-and-aesthetic-parameters/):
   
 ```{r, include=FALSE}
 library(igraph)
@@ -1323,8 +1323,8 @@ Não deixe que esse chunck in-line seja separado através das linhas.
 Referência: [SW Carpentry](https://swcarpentry.github.io/r-novice-gapminder/15-knitr-markdown/index.html)
 ---
 class: middle
-## Inline R code
-Outro examplo:
+## Código em R no texto
+Outro exemplo:
 ```{r eval=FALSE, include=TRUE}
 # O dataframe mtcars possui `r nrow(mtcars)` carros. 
 ```
@@ -1441,11 +1441,6 @@ Criando documentos em .pdf pode requerer a instalação de TeX. Se pedido, isso 
 
 Referência: [SW Carpentry](https://swcarpentry.github.io/r-novice-gapminder/15-knitr-markdown/index.html)
 
----
-##Desafio
-- Use o que aprendeu sobre RMarkdown e crie um pequeno relatório das atividades que fizemos hoje!
-
-- O [Cheat Sheet do RMarkdown](http://www.rstudio.com/wp-content/uploads/2016/03/rmarkdown-cheatsheet-2.0.pdf) pode te ajudar!
 
 ---
 class: middle
@@ -1476,6 +1471,11 @@ Calma! É bem comum dar erro ao compliar o arquivo pois **qualquer** código err
 ```{r echo=FALSE, out.width="30%"}
 knitr::include_graphics("https://media.giphy.com/media/j9GASQ5ocrIRicnmyq/giphy.gif")
 ```
+---
+##Desafio
+- Use o que aprendeu sobre RMarkdown e crie um pequeno relatório das atividades que fizemos hoje!
+
+- O [Cheat Sheet do RMarkdown](http://www.rstudio.com/wp-content/uploads/2016/03/rmarkdown-cheatsheet-2.0.pdf) pode te ajudar!
 
 ---
 # Referências
