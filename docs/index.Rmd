@@ -1,6 +1,6 @@
 ---
 title: "Oficina de R - Intermediário"
-subtitle: "R-Ladies São Paulo"
+subtitle: "R-Ladies São Paulo <br> <br> [bit.ly/rladiesSP6](http://bit.ly/rladiesSP6)"
 date: "23/02/2019"
 encoding: "UTF-8"
 output:
@@ -9,6 +9,11 @@ output:
     css: [default, rladies, robot-fonts]
     lib_dir: libs
     nature:
+      slideNumberFormat: |
+          <div class="progress-bar-container">
+          <div class="progress-bar" style="width: calc(%current% / %total% * 100%);">
+          </div>
+          </div>
       highlightStyle: github
       highlightLines: true
       countIncrementalSlides: false
@@ -17,6 +22,34 @@ output:
 
 knitr::opts_chunk$set(echo = TRUE, fig.align = "center")
 ```
+
+```{css, echo=FALSE}
+#pre {
+ # max-width: 100%;
+  #overflow-x: scroll;
+   #height: 10pc;
+  #overflow-y: scroll;
+#}
+```
+<style>
+.remark-slide-number {
+  position: inherit;
+}
+
+.remark-slide-number .progress-bar-container {
+  position: absolute;
+  bottom: 0;
+  height: 4px;
+  display: block;
+  left: 0;
+  right: 0;
+}
+
+.remark-slide-number .progress-bar {
+  height: 100%;
+  background-color: red;
+}
+</style>
 class:  center, middle
 
 ##Organização e realização:
@@ -382,26 +415,8 @@ df_titanic %>%
   summarize(num_passageiros = n())
 ```
 
----
-
-class: middle
-
-#### Para relembrar e fazer os desafios de dplyr da oficina de R básico:
 
 
-- https://bit.ly/rladiesSP5
-
----
-- **Carregar o dataset**
-
-Utilizaremos o dataset `diamonds`, que vem no pacote ggplot2. 
-```{r message=FALSE, warning=FALSE}
-library(tidyverse)
-#install.packages("ggplot2")
-library(ggplot2)
-DT::datatable(head(diamonds), fillContainer = FALSE)
-diamonds <- ggplot2::diamonds
-```
 
 ---
 # dplyr - os n verbos
@@ -424,6 +439,29 @@ diamonds <- ggplot2::diamonds
 
     - **summarise()**, summarise_all(), summarise_at(), summarise_if()
     - **group_by()**, ungroup(), group_by_all(), group_by_at(), group_by_if() 
+---
+
+class: middle
+
+#### Para relembrar e fazer os desafios de dplyr da oficina de R básico:
+
+
+- https://bit.ly/rladiesSP5
+
+---
+class:  center, middle
+# Introdução ao Join
+---
+**Carregar o dataset**
+
+Utilizaremos o dataset `diamonds`, que vem no pacote ggplot2. 
+```{r message=FALSE, warning=FALSE}
+library(tidyverse)
+#install.packages("ggplot2")
+library(ggplot2)
+diamonds <- ggplot2::diamonds
+DT::datatable(head(diamonds), fillContainer = TRUE)
+```
 
 ---
 # dplyr - combinando tabelas
@@ -518,6 +556,9 @@ full_join(base_A, base_B,
   glimpse()
 ```
 
+---
+class:  center, middle
+# Introdução ao purrr
 
 ---
 # purrr - programação funcional
@@ -556,8 +597,9 @@ O **map()** sempre retorna uma lista, outras possibilidades:
 
 
 
-
-
+---
+class:  center, middle
+# Introdução ao ggplot2 
 ---
 ### O que é o ggplot2?
 
@@ -573,7 +615,7 @@ O **map()** sempre retorna uma lista, outras possibilidades:
 
   *[R for Data Science - capítulos 3 e 28](https://r4ds.had.co.nz/data-visualisation.html)
 
-```{r echo=FALSE}
+```{r echo=FALSE, out.width="30%"}
 knitr::include_graphics("img/ggplot2.png")
 ```
 ---
@@ -598,9 +640,6 @@ especificar  e combinar blocos de construção de um gráfico para criar pratica
   A função ggplot() recebe um data frame e cria a camada base do gráfico. Se rodarmos somente ela, teremos um painel em branco:
 
 ```{r warning=FALSE}
-DT::datatable(head(diamonds), fillContainer = FALSE)
-diamonds <- ggplot2::diamonds
-#ggplot(data = diamonds)
 diamonds %>% ggplot() #usando o pipe
 ```
 ---
@@ -893,6 +932,22 @@ grafico2 <- diamonds %>%
 
 grafico1 + grafico2
 ```
+
+
+
+
+
+
+
+
+
+
+
+
+---
+class:  center, middle
+# Introdução ao Rmarkdown
+
 ---
 ## Rmarkdown
 * Possibilita exportar diferentes tipos de arquivos.
@@ -920,7 +975,7 @@ knitr::include_graphics("img/New_R_Markdown.png")
 ---
 class:  middle
 
-# yaml - metadados do documento:
+## yaml - metadados do documento:
 - **y**et **a**nother **m**arkup **l**anguage 
 - Controla muitas das configurações do documento.
 - title: título
@@ -944,7 +999,7 @@ output: html_document
 
 ```
 ---
-# Markdown
+## Markdown
 * O markdown é uma linguagem de marcação simples. 
 * [Rmarkdown Cheatsheet](http://www.rstudio.com/wp-content/uploads/2016/03/rmarkdown-cheatsheet-2.0.pdf)
 * Elaborada para ser fácil de ler, fácil de escrever.
@@ -955,7 +1010,7 @@ output: html_document
 _Itálico_: `_italics_`
 
 ---
-#Sintaxe Markdown
+##Sintaxe Markdown
 **Adicionar títulos**
 
 `# Título 1`
@@ -970,7 +1025,7 @@ _Itálico_: `_italics_`
 
 ---
 class: middle
-# Fazendo uma lista
+## Fazendo uma lista
 Você pode fazer uma lista escrevendo com hífens ou asteriscos, como a seguir:
 
 `* negrito com asteriscos duplos`
@@ -998,7 +1053,7 @@ Referência: [SW Carpentry](https://swcarpentry.github.io/r-novice-gapminder/15-
 
 ---
 class: middle
-# Fazendo uma lista enumerada
+## Fazendo uma lista enumerada
 Você pode fazer uma lista numerada usando somente números. Você pode usar o mesmo número quantas vezes quiser: 
 
 `1. negrito com asteriscos duplos`
@@ -1021,12 +1076,16 @@ Referência: [SW Carpentry](https://swcarpentry.github.io/r-novice-gapminder/15-
 
 ---
 class: middle
-# Compilando o RMarkdown
+## Compilando o RMarkdown
 
-Você compila o documento de RMarkdown para uma página html ao clicar no botão "Knit HTML" in canto superior esquerdo. 
+Você compila o documento de RMarkdown para uma página html ao clicar no botão "Knit HTML" no canto superior esquerdo. 
 
+```{r echo=FALSE, fig.align='center', out.width="50%"}
+knitr::include_graphics("img/knit.png")
+```
 
-#Desafio
+---
+### Desafio
 Crie um novo documento R Markdown. Delete todos os chuncks de código de R e escreva um pouco de Markdown (algumas seções, textos estilizados e lista com itens). 
 
 Converta o documento em uma webpage.
@@ -1037,7 +1096,7 @@ Referência: [SW Carpentry](https://swcarpentry.github.io/r-novice-gapminder/15-
 
 ---
 class: middle
-# Mais de Markdown
+#$ Mais de Markdown
 
 Você pode fazer um hiperlink dessa forma: `[**texto para mostrar**](http://the-web-page.com)`.
 
@@ -1053,7 +1112,7 @@ Referência: [SW Carpentry](https://swcarpentry.github.io/r-novice-gapminder/15-
 
 ---
 class: middle
-# Chuncks de Código R
+#$ Chuncks de Código R
 
 Markdown é interessante e útil, mas seu real poder vem da combinação de Markdown com chuncks de códigos em R. 
 Isso  é o Markdown. Quando processado, o código em R será executado; se ele produz figuras, as figuras serão inseridas ao final do documento.
@@ -1070,7 +1129,7 @@ knitr::include_graphics("img/chunk.png")
 Referência: [SW Carpentry](https://swcarpentry.github.io/r-novice-gapminder/15-knitr-markdown/index.html)
 ---
 class: middle
-# Como criar um chunck de código?
+## Como criar um chunck de código?
 
 ```{r echo=FALSE, fig.align='center'}
 knitr::include_graphics("img/8.PNG")
@@ -1085,7 +1144,7 @@ Adicione chunks de código para carregar o pacote dplyr
  
 ---
 class: middle
-# Como as coisas são compiladas?
+## Como as coisas são compiladas?
 
 - Quando você pressiona o botão “Knit HTML”, o documento R Markdown é processado pelo knitr e um documento Markdown é produzido (como, também, um potencial conjunto de arquivos de figuras): o código em R é executado e substituído pelo input e output; se figuras são produzidas, links para essas figuras serão incluídos.
 
@@ -1101,7 +1160,7 @@ Referência: [SW Carpentry](https://swcarpentry.github.io/r-novice-gapminder/15-
 
 ---
 class: middle
-#Opções de chunck
+## Opções de chunck
 
 Há uma variedade de opções que podem afetar como os chuncks de código são tratados.
 
@@ -1127,7 +1186,7 @@ Referência: [SW Carpentry](https://swcarpentry.github.io/r-novice-gapminder/15-
  
 ---
 class: middle
-# Opções globais de chunck
+## Opções globais de chunck
 Muitas vezes, haverá algumas opções que você irá querer repetir seu uso; para isso, você pode configurar as opções globais de chinck, como:  
 
 
@@ -1143,7 +1202,7 @@ Referência: [SW Carpentry](https://swcarpentry.github.io/r-novice-gapminder/15-
 
 ---
 class: middle
-# Inline R code
+## Inline R code
 Você pode fazer com que todo número em seu relatório seja reproduzível. 
 
 ```{r}
@@ -1172,7 +1231,7 @@ Não deixe que esse chunck in-line seja separado através das linhas.
 Referência: [SW Carpentry](https://swcarpentry.github.io/r-novice-gapminder/15-knitr-markdown/index.html)
 ---
 class: middle
-# Inline R code
+## Inline R code
 Outro examplo:
 ```{r eval=FALSE, include=TRUE}
 # O dataframe mtcars possui `r nrow(mtcars)` carros. 
@@ -1181,7 +1240,7 @@ Outro examplo:
 Exemplo: O dataframe mtcars possui `r nrow(mtcars)` carros.
 ---
 class: middle
-# Desafio
+## Desafio
 
 
 - Tente um pouco de código R in-line.
@@ -1192,7 +1251,7 @@ Referência: [SW Carpentry](https://swcarpentry.github.io/r-novice-gapminder/15-
 
 ---
 class: middle
-# Exemplo: adicionando um gráfico
+## Exemplo: adicionando um gráfico
 ```{r}
 attach(mtcars)
 plot(wt, mpg, main="Exemplo de Gráfico de Dispersão",
@@ -1200,21 +1259,21 @@ xlab="Peso do Carro ", ylab="Milhas Por Galão ", pch=19)
 ```
 ---
 class: middle
-# Exemplo: adicionando uma tabela simples
+## Exemplo: adicionando uma tabela simples
 
 ```{r }
 head(mtcars)
 ```
 ---
 class: middle
-# Exemplo: adicionando uma tabela
+## Exemplo: adicionando uma tabela
 ```{r}
 DT::datatable(head(mtcars, 10),
   fillContainer = FALSE, options = list(pageLength = 5))
 ```
 ---
 class: middle
-# Adicionando imagens usando o Knitr
+## Adicionando imagens usando o Knitr
 
 Função: `knitr::include_graphics()`
 
@@ -1224,7 +1283,7 @@ knitr::include_graphics("https://www.r-project.org/Rlogo.png")
 ```
 ---
 class: middle
-# Adicionando imagens usando Knitr: opções de Chunk 
+## Adicionando imagens usando Knitr: opções de Chunk 
 
 - `out.width = "50%"` - tamanho da imagem
 
@@ -1237,7 +1296,7 @@ knitr::include_graphics("https://www.r-project.org/Rlogo.png")
 
 ---
 class: middle
-#Adicionando imagens usando Knitr: opções de Chunk 
+##Adicionando imagens usando Knitr: opções de Chunk 
 
 - **Alinhamento da figura**
 - `fig.align = 'center', 'default', **'left'**,'right'` 
@@ -1253,7 +1312,7 @@ knitr::include_graphics("https://www.r-project.org/Rlogo.png")
 ```
 ---
 class: middle
-#Adicionando imagens usando Knitr: opções de Chunk 
+##Adicionando imagens usando Knitr: opções de Chunk 
 
 - Legenda de figura 
 
@@ -1266,7 +1325,7 @@ knitr::include_graphics("https://www.r-project.org/Rlogo.png")
 ---
 
 class: middle
-# Desafio
+## Desafio
 - Adicionar imagem 
 
 - Usar opções de chunk para controlar o tamanho da figura e para esconder o código. 
@@ -1276,7 +1335,7 @@ class: middle
 Refêrencia: [SW Carpentry](https://swcarpentry.github.io/r-novice-gapminder/15-knitr-markdown/index.html)
 ---
 class: middle
-# Outras opções de saída
+## Outras opções de saída
 Você também pode converter o R Markdown para PDF ou um documento Word. Clique no pequeno triângulo próximo ao botão "Knit HTML" para aparecer um menu. Ou você pode colocar pdf_document ou word_document ino cabeçalho do arquivo.
 
 ```{r echo=FALSE, fig.align='center'}
@@ -1291,14 +1350,14 @@ Criando documentos em .pdf pode requerer a instalação de TeX. Se pedido, isso 
 Referência: [SW Carpentry](https://swcarpentry.github.io/r-novice-gapminder/15-knitr-markdown/index.html)
 
 ---
-#Desafio
+##Desafio
 - Use o que aprendeu sobre RMarkdown e crie um pequeno relatório das atividades que fizemos hoje!
 
 - O [Cheat Sheet do RMarkdown](http://www.rstudio.com/wp-content/uploads/2016/03/rmarkdown-cheatsheet-2.0.pdf) pode te ajudar!
 
 ---
 class: middle
-# Outras opções de saída
+## Outras opções de saída
 
 - Você pode fazer apresentações usando R, RMarkdown e KnitR - Use o pacote  [Xaringan](https://github.com/yihui/xaringan); (essa apresentação foi feita com Xaringan!)
 
@@ -1311,7 +1370,7 @@ class: middle
 - Veja mais: https://rmarkdown.rstudio.com/index.html
 
 ---
-# DEU ERRO NO KNITR!
+## DEU ERRO NO KNITR!
 
 Calma! É bem comum dar erro ao compliar o arquivo pois **qualquer** código errado causa isso. Algumas coisas pra se observar:
 
