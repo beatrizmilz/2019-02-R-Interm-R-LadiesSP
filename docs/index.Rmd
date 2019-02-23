@@ -1446,7 +1446,7 @@ Referência: [SW Carpentry](https://swcarpentry.github.io/r-novice-gapminder/15-
 class: middle
 ## Outras opções de saída
 
-- Você pode fazer apresentações usando R, RMarkdown e KnitR - Use o pacote  [Xaringan](https://github.com/yihui/xaringan). Essa apresentação foi feita com Xaringan! [3o Meetup R-Ladies São Paulo sobre Apresentações no R] (https://beatrizmilz.github.io/apresentacao_RLadies_xaringan/)
+- Você pode fazer apresentações usando R, RMarkdown e KnitR - Use o pacote  [Xaringan](https://github.com/yihui/xaringan). Essa apresentação foi feita com Xaringan! [3o Meetup R-Ladies São Paulo sobre Apresentações no R](https://beatrizmilz.github.io/apresentacao_RLadies_xaringan/)
 
 - Rmd compila em um formato HTML. Entoã você pode criar páginas html usando essa ferramenta. O pacote **[prettydoc](https://cran.r-project.org/web/packages/prettydoc/vignettes/architect.html)**.
 
