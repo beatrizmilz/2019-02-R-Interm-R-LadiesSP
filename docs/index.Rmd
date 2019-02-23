@@ -660,7 +660,9 @@ mtcars %>%
   map_dbl("r.squared")
 
 ```
-
+---
+class:  center, middle
+#[Cheatsheets :)](https://www.rstudio.com/resources/cheatsheets/)
 
 ---
 class:  center, middle
@@ -1452,9 +1454,9 @@ class: middle
 - Rmd compila em um formato HTML. Entoã você pode criar páginas html usando essa ferramenta. O pacote **[prettydoc](https://cran.r-project.org/web/packages/prettydoc/vignettes/architect.html)**.
 
 
-- Pacote bookdown - escrever livros;
+- Pacote bookdown - escrever livros; https://bookdown.org/
 
-- Pacote blogdown - criar páginas na internet;
+- Pacote blogdown - criar páginas na internet; https://bookdown.org/yihui/blogdown/
 
 - Veja a [galeria](https://rmarkdown.rstudio.com/gallery.html), lá tem exemplos do que dá pra fazer com Rmarkdown.
 
